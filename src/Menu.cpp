@@ -7,7 +7,7 @@
 #include "Menu.h"
 #include "StandardCab.h"
 #include "LuxuryCab.h"
-#include <stdlib.h>
+
 
 /*
  * Class name: Menu
@@ -61,7 +61,6 @@ void Menu::getInput(){
             case 1: {// add Driver.
                 switchFlag = 1;
                 string input;
-                int i = 0;
                 string inputArr[10];
                 int age, id, experience, vehiclId;;
                 string status;
@@ -80,7 +79,6 @@ void Menu::getInput(){
             case 2: {// add trip.
                 switchFlag = 1;
                 string input;
-                int i = 0;
                 string inputArr[10];
                 int id, startX, startY, endX, endY, numOfPassangers;
                 double tariff;
@@ -104,7 +102,6 @@ void Menu::getInput(){
             case 3: {// add Cab.
                 switchFlag = 1;
                 string input;
-                int i = 0;
                 string inputArr[10];
                 int id, taxiType;
                 string carMan, color;
@@ -136,7 +133,6 @@ void Menu::getInput(){
             case 4: {// get the location of a certain driver.
                 switchFlag = 1;
                 string input;
-                int i = 0;
                 string inputArr[10];
                 int id;
                 cin >> input;

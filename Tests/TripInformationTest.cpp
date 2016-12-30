@@ -4,8 +4,8 @@
 //
 
 #include "TripInformationTest.h"
-#include "Point.h"
-#include "TripInformation.h"
+#include "../src/Point.h"
+#include "../src/TripInformation.h"
 
 TEST(TripInformationTests, getRideId){
 

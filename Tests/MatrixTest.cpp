@@ -3,7 +3,7 @@
 //
 
 #include "MatrixTest.h"
-#include "Matrix.h"
+#include "../src/Matrix.h"
 
 TEST(MatrixTests, getNode){
 

@@ -3,7 +3,7 @@
 //
 
 #include "PassangerTest.h"
-#include "Passanger.h"
+#include "../src/Passanger.h"
 
 TEST(PassangerTest, satisfactionFromRide){
 

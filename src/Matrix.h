@@ -6,8 +6,10 @@
 #define EX11_MATRIX_H
 
 
-#include "Grid.h"
+
 #include "NodePoint.h"
+#include "Grid.h"
+
 /* class name : Matrix
  * class which inherit from Grid, this class allow us create
  * a map with AbstractNode objects

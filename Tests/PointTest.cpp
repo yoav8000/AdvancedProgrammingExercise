@@ -4,7 +4,7 @@
 //
 
 #include "PointTest.h"
-#include "Point.h"
+#include "../src/Point.h"
 
 TEST(PointTests, getX){
 
@@ -79,7 +79,7 @@ TEST(PointTests, boolOperator) {
 
 TEST(PointTests, outptOperator) {
 
-    Point p0(0, 0), p1(-1, -1), p2(2, 2), p3(3, 3);
+    Point p0(0, 0), p1(-1, -1);
 
 
     ostringstream out;

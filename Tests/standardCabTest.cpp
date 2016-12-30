@@ -3,8 +3,8 @@
 //
 
 #include "gtest/gtest.h"
-#include "StandardCab.h"
-#include "Matrix.h"
+#include "../src/StandardCab.h"
+#include "../src/Matrix.h"
 
 TEST(StandardCabTest,getAndSetSpeedTest){
     Matrix matrix(10,10);

@@ -4,12 +4,12 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 add_subdirectory(lib/googletest-master)
 include_directories(lib/googletest-master/googletest/include)
 include_directories(lib/googletest-master/googlemock/include)
-set(SOURCE_FILES main.cpp Point.cpp Point.h PointTest.cpp PointTest.h AbstractNode.cpp AbstractNode.h NodePoint.cpp
-        NodePoint.h Grid.cpp Grid.h Matrix.cpp Matrix.h MatrixTest.cpp MatrixTest.h Bfs.cpp Bfs.h BfsTest.cpp Bfs.h
-        AbstractCab.cpp AbstractCab.h StandardCab.cpp StandardCab.h LuxuryCab.cpp LuxuryCab.h Passanger.cpp Passanger.h
-        PassangerTest.cpp PassangerTest.h TaxiCenter.cpp TaxiCenter.h Driver.cpp Driver.h DriverTest.cpp
-        DriverTest.h TripInformation.cpp TripInformation.h TripInformationTest.cpp TripInformation.h
-        LuxuryCabTest.cpp LuxuryCabTest.h standardCabTest.cpp standardCabTest.h NodePointTest.cpp NodePointTest.h
-        TaxiCenterTest.cpp TaxiCenterTest.h Menu.cpp Menu.h)
+set(SOURCE_FILES src/main.cpp src/Point.cpp src/Point.h Tests/PointTest.cpp Tests/PointTest.h src/AbstractNode.cpp src/AbstractNode.h src/NodePoint.cpp
+        src/NodePoint.h src/Grid.cpp src/Grid.h src/Matrix.cpp src/Matrix.h Tests/MatrixTest.cpp Tests/MatrixTest.h src/Bfs.cpp src/Bfs.h Tests/BfsTest.cpp src/Bfs.h
+        src/AbstractCab.cpp src/AbstractCab.h src/StandardCab.cpp src/StandardCab.h src/LuxuryCab.cpp src/LuxuryCab.h src/Passanger.cpp src/Passanger.h
+        Tests/PassangerTest.cpp Tests/PassangerTest.h src/TaxiCenter.cpp src/TaxiCenter.h src/Driver.cpp src/Driver.h Tests/DriverTest.cpp
+        Tests/DriverTest.h src/TripInformation.cpp src/TripInformation.h Tests/TripInformationTest.cpp src/TripInformation.h
+        Tests/LuxuryCabTest.cpp Tests/LuxuryCabTest.h Tests/standardCabTest.cpp Tests/standardCabTest.h Tests/NodePointTest.cpp Tests/NodePointTest.h
+        Tests/TaxiCenterTest.cpp Tests/TaxiCenterTest.h src/Menu.cpp src/Menu.h)
 add_executable(ex11 ${SOURCE_FILES})
 target_link_libraries(ex11 gtest gtest_main)

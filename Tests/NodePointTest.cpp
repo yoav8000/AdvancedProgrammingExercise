@@ -4,7 +4,7 @@
 
 #include "NodePointTest.h"
 #include "gtest/gtest.h"
-#include "NodePoint.h"
+#include "../src/NodePoint.h"
 
 TEST(NodePointTest, getAndSetFather){
     NodePoint* father = new NodePoint (1,1);

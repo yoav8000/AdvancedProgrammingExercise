@@ -3,8 +3,8 @@
 //
 
 #include "DriverTest.h"
-#include "Driver.h"
-#include "StandardCab.h"
+#include "../src/Driver.h"
+#include "../src/StandardCab.h"
 
 TEST(DriverTests, getAvailable) {
 

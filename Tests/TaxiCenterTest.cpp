@@ -2,12 +2,8 @@
 // Created by yoav on 03/12/16.
 //
 #include "gtest/gtest.h"
-#include "TaxiCenterTest.h"
-#include "TaxiCenter.h"
-#include "Driver.h"
-#include "LuxuryCab.h"
-#include <map>
-#include "AbstractCab.h"
+#include "../src/TaxiCenter.h"
+#include "../src/LuxuryCab.h"
 
 
 

@@ -4,8 +4,8 @@
 
 #include "LuxuryCabTest.h"
 #include "gtest/gtest.h"
-#include "LuxuryCab.h"
-#include "Matrix.h"
+#include "../src/LuxuryCab.h"
+#include "../src/Matrix.h"
 
 
 

@@ -3,11 +3,11 @@
 //
 
 #include "BfsTest.h"
-#include "Point.h"
-#include "AbstractNode.h"
-#include "NodePoint.h"
-#include "Matrix.h"
-#include "Bfs.h"
+#include "../src/Point.h"
+#include "../src/AbstractNode.h"
+#include "../src/NodePoint.h"
+#include "../src/Matrix.h"
+#include "../src/Bfs.h"
 
 
 TEST(BfsTests, BfsAlgorithm){

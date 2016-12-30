@@ -3,7 +3,6 @@
 //
 
 #include "StandardCab.h"
-#include "AbstractCab.h"
 //constructor.
 StandardCab::StandardCab(int cabId1,int meters1, char manufacturer1,
                          char color1,AbstractNode*& l){
