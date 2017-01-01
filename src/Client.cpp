@@ -76,6 +76,7 @@ int main(int argc, char *argv[]){
     boost::archive::binary_iarchive ia(s2);
     ia >> p1;
 
+
     int x=2;
 
 

@@ -37,7 +37,7 @@ using namespace boost::archive;
  */
 class AbstractNode {
 protected:
-    int isObstacle =0;// flags if the node is an obstacle or not.
+  //  int isObstacle =0;// flags if the node is an obstacle or not.
     // a function that get the printing from the "sons" classes
     virtual std::ostream& print(std::ostream &output) const = 0;
 public:
@@ -46,7 +46,7 @@ public:
     template<class Archive>
     void serialize(Archive &ar, const unsigned int version)
     {
-        ar & isObstacle;
+//       ar & isObstacle;
     }
 
     // set function
