@@ -62,7 +62,8 @@ int main(int argc, char *argv[]){
 
    // cout << *gp2;
 */
-    TripInformation p = TripInformation(1,2,2,0,1,2,30,8);
+
+    Bfs* p = new Bfs;
     string serializedPoint ;
     boost::iostreams::back_insert_device<std::string> inserter(serializedPoint);
     boost::iostreams::stream<boost::iostreams::back_insert_device<std::string> > s(inserter);
@@ -70,12 +71,32 @@ int main(int argc, char *argv[]){
     oa << p;
     s.flush();
 
-    TripInformation p1;
+    Bfs* p1;
     boost::iostreams::basic_array_source<char> device(serializedPoint.c_str(), serializedPoint.size());
     boost::iostreams::stream<boost::iostreams::basic_array_source<char> > s2(device);
     boost::archive::binary_iarchive ia(s2);
     ia >> p1;
 
+
+    Matrix matrix(10, 10);
+    NodePoint node1(0,0), node2(3, 5);
+    AbstractNode* start = matrix.getNode(&node1);
+    AbstractNode* end = matrix.getNode(&node2);
+    stack<Point> pointsStack;
+    for (unsigned i = 5, j = 3; j > 0; --j) {
+        pointsStack.push(Point(j,i));
+    }
+    for (int i = 5; i >= 0; --i) {
+        pointsStack.push(Point(0, i));
+    }
+    stack<AbstractNode*> stack = p1->theShortestWay(start, end);
+    while (!stack.empty() && !pointsStack.empty()) {
+
+        NodePoint* node =(NodePoint*) stack.top();
+        int x =(node->getPoint() == pointsStack.top());
+        pointsStack.pop();
+        stack.pop();
+    }
 
     int x=2;
 

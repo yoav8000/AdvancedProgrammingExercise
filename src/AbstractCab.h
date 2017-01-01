@@ -9,6 +9,29 @@
 #include <stack>
 #include "NodePoint.h"
 #include "Bfs.h"
+#include <iostream>
+#include <deque>
+#include <iostream>
+#include "AbstractNode.h"
+#include "Point.h"
+#include <iostream>
+#include <iostream>
+#include <fstream>
+#include <sstream>
+#include <boost/archive/text_oarchive.hpp>
+#include <boost/archive/text_iarchive.hpp>
+#include <boost/tokenizer.hpp>
+#include <boost/algorithm/string/predicate.hpp>
+#include <boost/lexical_cast.hpp>
+#include <boost/assign/list_of.hpp>
+#include <boost/algorithm/string.hpp>
+#include <boost/iostreams/device/back_inserter.hpp>
+#include <boost/iostreams/stream.hpp>
+#include <boost/archive/binary_oarchive.hpp>
+#include <boost/archive/binary_iarchive.hpp>
+#include <boost/serialization/deque.hpp>
+#include <boost/serialization/assume_abstract.hpp>
+#include <boost/serialization/stack.hpp>
 
 using namespace std;
 
