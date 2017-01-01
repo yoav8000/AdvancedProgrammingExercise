@@ -66,42 +66,18 @@ int main(int argc, char *argv[]){
    // cout << *gp2;
 */
 
-    Matrix matrix(10,10);
-    NodePoint* p3 =new NodePoint(0,0);
-    AbstractNode* abstractNode = matrix.getNode(p3);
-    delete p3;
-
-
-    AbstractCab* p = new LuxuryCab(12345678, 1000,'H', 'B',abstractNode);
-    Bfs bfs;
-    NodePoint* start = new NodePoint(0,0);
-    NodePoint* end = new NodePoint(1,1);
-    deque<AbstractNode*> s1 = bfs.theShortestWay(matrix.getNode(start),matrix.getNode(end));
-    p->setShortestPath(s1);
+    Driver p (123, 30, 'M', 12345, 10);
     string serializedPoint ;
     boost::iostreams::back_insert_device<std::string> inserter(serializedPoint);
     boost::iostreams::stream<boost::iostreams::back_insert_device<std::string> > s(inserter);
     boost::archive::binary_oarchive oa(s);
     oa << p;
     s.flush();
-
-    AbstractCab* p1;
+    Driver p1(0, 0, 'M', 0, 0) ;
     boost::iostreams::basic_array_source<char> device(serializedPoint.c_str(), serializedPoint.size());
     boost::iostreams::stream<boost::iostreams::basic_array_source<char> > s2(device);
     boost::archive::binary_iarchive ia(s2);
     ia >> p1;
-
-    deque<AbstractNode*> d = p->getShortestPath();
-    deque<AbstractNode*> d1 = p1->getShortestPath();
-    d.pop_front();
-    d1.pop_front();
-
-    NodePoint* point = (NodePoint*) d.front();
-    NodePoint* point1 = (NodePoint*) d1.front();
-
-
-
-    NodePoint* point2 = (NodePoint*)p1->getShortestPath().front();
     int x=2;
 
 

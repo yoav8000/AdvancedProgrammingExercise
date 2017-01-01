@@ -10,8 +10,23 @@
 #include "TripInformation.h"
 #include "Bfs.h"
 #include "Matrix.h"
-
+#include <iostream>
+#include <fstream>
+#include <sstream>
+#include <boost/archive/text_oarchive.hpp>
+#include <boost/archive/text_iarchive.hpp>
+#include <boost/tokenizer.hpp>
+#include <boost/algorithm/string/predicate.hpp>
+#include <boost/lexical_cast.hpp>
+#include <boost/assign/list_of.hpp>
+#include <boost/algorithm/string.hpp>
+#include <boost/iostreams/device/back_inserter.hpp>
+#include <boost/iostreams/stream.hpp>
+#include <boost/archive/binary_oarchive.hpp>
+#include <boost/archive/binary_iarchive.hpp>
+#include <boost/serialization/deque.hpp>
 using namespace std;
+using namespace boost::archive;
 /* class name : Driver
  * Class that create new drivers
  */
@@ -34,6 +49,24 @@ public:
     Driver(int driverId2, int age2, char maritalStatus);
     Driver(int driverId1, int age1, char maritalStatus,int vid);
     Driver(int driverId1, int age1, char maritalStatus,int vid, int yearsOfExp);
+
+    friend class boost::serialization::access;
+    template<class Archive>
+
+
+    void serialize(Archive &ar, const unsigned int version)
+    {
+        ar & driverId;
+        ar & vehicleId;
+        ar & age;
+        ar & status;
+        ar & yearsOfExperience;
+        ar & avarageSatisfaction;
+        ar & available;
+        ar & myCab;
+        ar & currentTrip;
+    }
+
 
     // get and set functions
     void setAvailable(bool avail);
