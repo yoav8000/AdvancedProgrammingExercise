@@ -12,17 +12,21 @@
 #include <boost/iostreams/stream.hpp>
 #include <boost/archive/binary_oarchive.hpp>
 #include <boost/archive/binary_iarchive.hpp>
-#include "Point.h"
-#include "NodePoint.h"
 #include <boost/serialization/export.hpp>
+#include "Socket.h"
+#include "Udp.h"
+#include "Driver.h"
+
 
 using namespace std;
 using namespace boost::archive;
 
 
 
-/*
+
+
 int main(int argc, char *argv[]){
+/*
     int portNumber = atoi(argv[1]); // getting the port number from the arguments of the main.
     Socket* socket = new Udp(0,portNumber);//creating a new socket -udp.
     socket->initialize();
@@ -57,9 +61,8 @@ int main(int argc, char *argv[]){
     ia >> serializedNodePoint;
 
    // cout << *gp2;
-
-
-    AbstractNode* p = new NodePoint(1,1);
+*/
+    TripInformation p = TripInformation(1,2,2,0,1,2,30,8);
     string serializedPoint ;
     boost::iostreams::back_insert_device<std::string> inserter(serializedPoint);
     boost::iostreams::stream<boost::iostreams::back_insert_device<std::string> > s(inserter);
@@ -67,23 +70,13 @@ int main(int argc, char *argv[]){
     oa << p;
     s.flush();
 
-
-  boost::iostreams::basic_array_source<char> device(serializedPoint.c_str(), serializedPoint.size());
-  boost::iostreams::stream<boost::iostreams::basic_array_source<char> > s2(device);
-  boost::archive::binary_iarchive ia(s2);
-  ia >> p1;
-
-
-
-    AbstractNode* p1;
+    TripInformation p1;
     boost::iostreams::basic_array_source<char> device(serializedPoint.c_str(), serializedPoint.size());
     boost::iostreams::stream<boost::iostreams::basic_array_source<char> > s2(device);
     boost::archive::binary_iarchive ia(s2);
     ia >> p1;
-    NodePoint* P2 = (NodePoint*)p1;
 
     int x=2;
 
 
 }
-*/

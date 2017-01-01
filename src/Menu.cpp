@@ -80,7 +80,7 @@ void Menu::getInput(){
                 switchFlag = 1;
                 string input;
                 string inputArr[10];
-                int id, startX, startY, endX, endY, numOfPassangers;
+                int id, startX, startY, endX, endY, numOfPassangers,timeOfStart;
                 double tariff;
                 cin >> input;
                 parseInput(input, inputArr);
@@ -91,10 +91,11 @@ void Menu::getInput(){
                 endY = atoi(inputArr[4].c_str());
                 numOfPassangers = atoi(inputArr[5].c_str());
                 tariff = atof(inputArr[6].c_str());
-                TripInformation *tripInformation = new TripInformation(id, 0,
+                timeOfStart =atoi(inputArr[7].c_str());
+                TripInformation *tripInformation = new TripInformation(id,
                                                                        startX, startY,
-                                                                       endX, endY, tariff,
-                                                                       numOfPassangers);
+                                                                       endX, endY, numOfPassangers,
+                                                                       tariff, timeOfStart);
                 //create a new trip.
                 taxiCenter->addTrip(tripInformation);// add the trip to the taxicenter.
                 break;

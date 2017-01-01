@@ -4,27 +4,38 @@
 
 #include "TripInformation.h"
 
+TripInformation::TripInformation(){ //for debugging
+    rideId = 0;
+    source = new NodePoint(0,0);
+    destination = new NodePoint(0,0);
+    tariff = 0;
+    numberOfPassangers=0;
+    timeOfStart=0;
+    meterPassed = 0;
+}
 
 TripInformation::TripInformation(int rideId2, int meterPassed2, AbstractNode* source2,
                                  AbstractNode* destination2 , double tariff2, int pass){
     rideId = rideId2;
-    meterPassed = meterPassed2;
+    meterPassed = 0;
     source = source2;
     destination = destination2;
     tariff = tariff2;
     numberOfPassangers=pass;
 
 }
-TripInformation::TripInformation(int rideId2, int meterPassed2, int xStart,
-                                 int yStart, int xEnd, int yEnd,
-                                 double tariff2, int pass){
+TripInformation::TripInformation(int rideId2, int xStart, int yStart, int xEnd, int yEnd,
+                                  int pass, double tariff2, int timeOfStart1){
     rideId = rideId2;
-    meterPassed = meterPassed2;
     source = new NodePoint(xStart,yStart);
     destination = new NodePoint(xEnd,yEnd);
     tariff = tariff2;
     numberOfPassangers=pass;
+    timeOfStart=timeOfStart1;
+    meterPassed = 0;
 }
+
+
 
 void TripInformation::setMetersPassed(int meters){
     meterPassed=meters;
