@@ -8,4 +8,4 @@
 std::ostream& operator<<( std::ostream &output, const AbstractNode &r){
     return r.print(output);
 }
- AbstractNode::~AbstractNode(){};
+AbstractNode::~AbstractNode(){};

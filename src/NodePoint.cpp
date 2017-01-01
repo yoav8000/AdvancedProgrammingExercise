@@ -3,6 +3,11 @@
 //
 
 #include "NodePoint.h"
+#include <boost/serialization/export.hpp>
+
+using namespace std;
+using namespace boost::archive;
+
 
 // constructors
 NodePoint::NodePoint(Point point, NodePoint* father){
@@ -43,7 +48,7 @@ NodePoint::NodePoint() {
 std::ostream& NodePoint::print(std::ostream &output) const{
     output << p;
     return output;
- }
+}
 
 // "==" definition
 bool NodePoint::operator ==(const NodePoint &r) const {
@@ -78,9 +83,9 @@ void NodePoint::setFlag(){
     flag = 1;
 }
 
- void NodePoint::setNotFlag() {
-     flag = 0;
- }
+void NodePoint::setNotFlag() {
+    flag = 0;
+}
 
 int NodePoint::getFlag(){
     return flag;
@@ -94,7 +99,7 @@ int NodePoint::getIsObstacle(){
 }
 
 std::deque<AbstractNode*> NodePoint::getNeighbors(){
-        return neighbors;
+    return neighbors;
 };
 
 // copy function
@@ -109,4 +114,5 @@ void NodePoint::addNeighbor(AbstractNode* node){
 }
 NodePoint::~NodePoint() {
 
-};
+}
+BOOST_CLASS_EXPORT_GUID(NodePoint,"NodePoint");
