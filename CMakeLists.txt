@@ -16,6 +16,6 @@ set(SOURCE_FILES src/main.cpp src/Point.cpp src/Point.h Tests/PointTest.cpp Test
         src/TripInformation.h
         Tests/LuxuryCabTest.cpp Tests/LuxuryCabTest.h Tests/standardCabTest.cpp Tests/standardCabTest.h
         Tests/NodePointTest.cpp Tests/NodePointTest.h
-        Tests/TaxiCenterTest.cpp Tests/TaxiCenterTest.h src/Menu.cpp src/Menu.h)
+        Tests/TaxiCenterTest.cpp Tests/TaxiCenterTest.h src/Menu.cpp src/Menu.h src/Client.cpp src/Server.cpp)
 add_executable(ex11 ${SOURCE_FILES})
 target_link_libraries(ex11 gtest gtest_main)
