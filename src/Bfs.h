@@ -39,7 +39,7 @@ class Bfs {
 
 public:
     // return the shortest way from star point to the end in stack
-    std::stack<AbstractNode*> theShortestWay(AbstractNode* start,
+    std::deque<AbstractNode*> theShortestWay(AbstractNode* start,
                                              AbstractNode* end);
 
     friend class boost::serialization::access;

@@ -8,7 +8,27 @@
 
 #include "AbstractCab.h"
 #include <string>
+#include <iostream>
+#include <fstream>
+#include <sstream>
+#include <boost/archive/text_oarchive.hpp>
+#include <boost/archive/text_iarchive.hpp>
+#include <boost/tokenizer.hpp>
+#include <boost/algorithm/string/predicate.hpp>
+#include <boost/lexical_cast.hpp>
+#include <boost/assign/list_of.hpp>
+#include <boost/algorithm/string.hpp>
+#include <boost/iostreams/device/back_inserter.hpp>
+#include <boost/iostreams/stream.hpp>
+#include <boost/archive/binary_oarchive.hpp>
+#include <boost/archive/binary_iarchive.hpp>
+#include <boost/serialization/deque.hpp>
+#include <boost/serialization/stack.hpp>
+
 using namespace std;
+using namespace boost::archive;
+
+
 /*
  * class name: StandardCab that inherits from AbstractCab.
  */
@@ -16,6 +36,15 @@ class StandardCab: public AbstractCab {
 public:
     //constructor.
     StandardCab(int cabId1 ,int kilometers1,char manufacturer1, char color1, AbstractNode*& l);
+    StandardCab();
+
+    friend class boost::serialization::access;
+    template<class Archive>
+    void serialize(Archive &ar, const unsigned int version)
+    {
+        ar&boost::serialization::base_object<AbstractCab>(*this);
+    }
+
     // getters and setters.
     void setSpeed(int speed1);
     int getSpeed();
@@ -25,7 +54,8 @@ public:
     int moveOneStep();//the method that moves the cab.
     int getCabId();
     Bfs*& getNavigator();
-    void setShortestPath(stack<AbstractNode*>& path);
+    void setShortestPath(deque<AbstractNode*>& path);
+    deque<AbstractNode*> getShortestPath(); //for debugging.
     void addMetersPassed(int meters);
     int getMeterPassed();
     ~StandardCab();
@@ -34,3 +64,4 @@ public:
 
 
 #endif //EX11_STANDARDCAB_H
+

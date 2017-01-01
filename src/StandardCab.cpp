@@ -1,7 +1,7 @@
 //
 // Created by yoav on 02/12/16.
 //
-
+#include <boost/serialization/export.hpp>
 #include "StandardCab.h"
 //constructor.
 StandardCab::StandardCab(int cabId1,int meters1, char manufacturer1,
@@ -17,7 +17,22 @@ StandardCab::StandardCab(int cabId1,int meters1, char manufacturer1,
  navigator=new Bfs();
 
 }
+
+StandardCab::StandardCab() {
+  cabId=0;
+  type=1;
+  meters=0;
+  manufacturer = 0;
+  color=0;
+  coefficient=1;
+ location = 0;
+ speed=0;
+ navigator=new Bfs();
+}
+
 //getters and setters.
+
+
  void StandardCab::setSpeed(int speed1){
   speed =speed1;
  }
@@ -41,13 +56,17 @@ int StandardCab::getCabId() {
 }
 
 int StandardCab:: moveOneStep(){
-  location = shortestPath->top();
-  shortestPath->pop();
+  location = shortestPath->front();
+  shortestPath->pop_front();
  return 1;
 }// the method that moves the cab.
 
-void StandardCab::setShortestPath(stack<AbstractNode*>& path){
+void StandardCab::setShortestPath(deque<AbstractNode*>& path){
  shortestPath=&path;
+}
+
+deque<AbstractNode*> StandardCab::getShortestPath(){
+    return *shortestPath;
 }
 
 Bfs*& StandardCab::getNavigator() {
@@ -65,3 +84,5 @@ int StandardCab::getMeterPassed() {
 StandardCab::~StandardCab() {
  delete(navigator);
 };//destructor.
+
+BOOST_CLASS_EXPORT_GUID(AbstractCab,"AbstractCab");

@@ -16,6 +16,8 @@
 #include "Socket.h"
 #include "Udp.h"
 #include "Driver.h"
+#include "StandardCab.h"
+#include "LuxuryCab.h"
 
 
 using namespace std;
@@ -23,8 +25,9 @@ using namespace boost::archive;
 
 
 
-
-
+//BOOST_CLASS_EXPORT_GUID(AbstractCab,"AbstractCab");
+BOOST_CLASS_EXPORT(StandardCab);
+BOOST_CLASS_EXPORT(LuxuryCab);
 int main(int argc, char *argv[]){
 /*
     int portNumber = atoi(argv[1]); // getting the port number from the arguments of the main.
@@ -63,7 +66,18 @@ int main(int argc, char *argv[]){
    // cout << *gp2;
 */
 
-    Bfs* p = new Bfs;
+    Matrix matrix(10,10);
+    NodePoint* p3 =new NodePoint(0,0);
+    AbstractNode* abstractNode = matrix.getNode(p3);
+    delete p3;
+
+
+    AbstractCab* p = new LuxuryCab(12345678, 1000,'H', 'B',abstractNode);
+    Bfs bfs;
+    NodePoint* start = new NodePoint(0,0);
+    NodePoint* end = new NodePoint(1,1);
+    deque<AbstractNode*> s1 = bfs.theShortestWay(matrix.getNode(start),matrix.getNode(end));
+    p->setShortestPath(s1);
     string serializedPoint ;
     boost::iostreams::back_insert_device<std::string> inserter(serializedPoint);
     boost::iostreams::stream<boost::iostreams::back_insert_device<std::string> > s(inserter);
@@ -71,33 +85,23 @@ int main(int argc, char *argv[]){
     oa << p;
     s.flush();
 
-    Bfs* p1;
+    AbstractCab* p1;
     boost::iostreams::basic_array_source<char> device(serializedPoint.c_str(), serializedPoint.size());
     boost::iostreams::stream<boost::iostreams::basic_array_source<char> > s2(device);
     boost::archive::binary_iarchive ia(s2);
     ia >> p1;
 
+    deque<AbstractNode*> d = p->getShortestPath();
+    deque<AbstractNode*> d1 = p1->getShortestPath();
+    d.pop_front();
+    d1.pop_front();
 
-    Matrix matrix(10, 10);
-    NodePoint node1(0,0), node2(3, 5);
-    AbstractNode* start = matrix.getNode(&node1);
-    AbstractNode* end = matrix.getNode(&node2);
-    stack<Point> pointsStack;
-    for (unsigned i = 5, j = 3; j > 0; --j) {
-        pointsStack.push(Point(j,i));
-    }
-    for (int i = 5; i >= 0; --i) {
-        pointsStack.push(Point(0, i));
-    }
-    stack<AbstractNode*> stack = p1->theShortestWay(start, end);
-    while (!stack.empty() && !pointsStack.empty()) {
+    NodePoint* point = (NodePoint*) d.front();
+    NodePoint* point1 = (NodePoint*) d1.front();
 
-        NodePoint* node =(NodePoint*) stack.top();
-        int x =(node->getPoint() == pointsStack.top());
-        pointsStack.pop();
-        stack.pop();
-    }
 
+
+    NodePoint* point2 = (NodePoint*)p1->getShortestPath().front();
     int x=2;
 
 

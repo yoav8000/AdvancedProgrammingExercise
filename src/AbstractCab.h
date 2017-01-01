@@ -34,7 +34,7 @@
 #include <boost/serialization/stack.hpp>
 
 using namespace std;
-
+using namespace boost::archive;
 
 
 /*
@@ -48,7 +48,7 @@ class AbstractCab {
 
 protected:
     //members
-    stack <AbstractNode*>* shortestPath;
+    deque <AbstractNode*>* shortestPath;
     Bfs* navigator;
     int cabId;
     int type;
@@ -61,12 +61,34 @@ protected:
     virtual void setSpeed(int speed1) =0;
 
 public:
+
+public:
+
+    friend class boost::serialization::access;
+    template<class Archive>
+    void serialize(Archive &ar, const unsigned int version)
+    {
+
+        ar & navigator;
+        ar & cabId;
+        ar & type;
+        ar & meters;
+        ar & manufacturer;
+        ar & color;
+        ar & coefficient;
+        ar & speed;
+        ar & location;
+        ar & shortestPath;
+    }
+
+
     //getters and setters.
     virtual int getType()=0;
     virtual AbstractNode* getLocation()=0;
     virtual int getCabId()=0;
     virtual int getMeterPassed()=0;
-    virtual void setShortestPath(stack<AbstractNode*>& path)=0;
+    virtual void setShortestPath(deque<AbstractNode*>& path)=0;
+    virtual deque<AbstractNode*> getShortestPath()=0; //for debugging.
     virtual Bfs*& getNavigator()=0;
 
     virtual int moveOneStep() =0;//returns the amount of steps did and moves the cab.
@@ -75,6 +97,6 @@ public:
 
 
 };
-
+BOOST_SERIALIZATION_ASSUME_ABSTRACT(AbstractCab);
 
 #endif //EX11_ABSTRACTCAB_H

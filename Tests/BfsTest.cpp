@@ -25,16 +25,16 @@ TEST(BfsTests, BfsAlgorithm){
     for (int i = 5; i >= 0; --i) {
         pointsStack.push(Point(0, i));
     }
-    stack<AbstractNode*> stack = bfs.theShortestWay(start, end);
-    ASSERT_EQ(stack.size(), pointsStack.size())<<"stack and ponitsStack have different size";
+    deque<AbstractNode*> deque1 = bfs.theShortestWay(start, end);
+    ASSERT_EQ(deque1.size(), pointsStack.size())<<"stack and ponitsStack have different size";
 
-    while (!stack.empty() && !pointsStack.empty()) {
+    while (!deque1.empty() && !pointsStack.empty()) {
 
-        NodePoint* node =(NodePoint*) stack.top();
+        NodePoint* node =(NodePoint*) deque1.front();
         EXPECT_EQ(node->getPoint(), pointsStack.top()) <<"the bfs algorithm is wrong at point "
                                                        << counter;
         pointsStack.pop();
-        stack.pop();
+        deque1.pop_front();
         counter++;
     }
 }

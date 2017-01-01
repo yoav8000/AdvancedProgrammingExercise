@@ -4,7 +4,7 @@
 
 #include "Bfs.h"
 #include "NodePoint.h"
-std::stack<AbstractNode*> Bfs::theShortestWay(AbstractNode* start,
+std::deque<AbstractNode*> Bfs::theShortestWay(AbstractNode* start,
                                               AbstractNode* end){
 
     // deque for nodes
@@ -16,6 +16,7 @@ std::stack<AbstractNode*> Bfs::theShortestWay(AbstractNode* start,
 
     // stack for the shortest way
     std::stack<AbstractNode*> stack;
+    std::deque<AbstractNode*> finalRoute;
     AbstractNode* node;
     AbstractNode* nodeNeighbor;
 
@@ -72,7 +73,15 @@ std::stack<AbstractNode*> Bfs::theShortestWay(AbstractNode* start,
         resetNodes1.front()->setNotFlag();
         resetNodes1.pop_front();
     }
-    return stack;
+    while(!(stack.empty())){
+        finalRoute.push_back(stack.top());
+        stack.pop();
+
+    }
+
+    return finalRoute;
 }
+
+
 
 Bfs::~Bfs() {};

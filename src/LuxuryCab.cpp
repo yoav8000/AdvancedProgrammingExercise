@@ -3,6 +3,8 @@
 //
 #include "AbstractCab.h"
 #include "LuxuryCab.h"
+#include <boost/serialization/export.hpp>
+
 //constructor.
 LuxuryCab::LuxuryCab(int cabId1 ,int meters1, char manufacturer1,
                      char color1, AbstractNode*& l){
@@ -16,6 +18,19 @@ LuxuryCab::LuxuryCab(int cabId1 ,int meters1, char manufacturer1,
     speed =2;
     navigator=new Bfs();
 }
+
+LuxuryCab::LuxuryCab() {
+    cabId=0;
+    meters=0;
+    manufacturer = 0;
+    color=0;
+    coefficient=2;
+    type =2;
+    location = 0;
+    speed =2;
+    navigator=new Bfs();
+}
+
 //getters and setters.
 void LuxuryCab::setSpeed(int speed1){
     speed=speed1;
@@ -28,13 +43,13 @@ float LuxuryCab::getTariff(){
 }
 int LuxuryCab:: moveOneStep(){
     if(shortestPath->size()>=2){
-        shortestPath->pop();
-        location=shortestPath->top();
-        shortestPath->pop();
+        shortestPath->pop_front();
+        location=shortestPath->front();
+        shortestPath->pop_front();
         return 2;
     } else {
-        location=shortestPath->top();
-        shortestPath->pop();
+        location=shortestPath->front();
+        shortestPath->pop_front();
         return 1;
     }
 }
@@ -49,8 +64,12 @@ int LuxuryCab::getCabId() {
     return cabId;
 }
 
- void LuxuryCab::setShortestPath(stack<AbstractNode*>& path){
+ void LuxuryCab::setShortestPath(deque<AbstractNode*>& path){
     shortestPath= &path;
+}
+
+deque<AbstractNode*> LuxuryCab::getShortestPath(){
+    return *shortestPath;
 }
 
 Bfs*& LuxuryCab::getNavigator() {
@@ -67,3 +86,5 @@ int LuxuryCab::getMeterPassed() {
 LuxuryCab::~LuxuryCab(){
     delete(navigator);
 };//destructor.
+
+//BOOST_CLASS_EXPORT_GUID(AbstractCab,"AbstractCab");

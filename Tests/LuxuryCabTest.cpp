@@ -53,7 +53,7 @@ TEST(luxuryCabTest,locationTest){//check the type of the cab.
     Bfs bfs;
     NodePoint* start = new NodePoint(0,0);
     NodePoint* end = new NodePoint(1,1);
-    stack<AbstractNode*> s = bfs.theShortestWay(matrix.getNode(start),matrix.getNode(end));
+    deque<AbstractNode*> s = bfs.theShortestWay(matrix.getNode(start),matrix.getNode(end));
     l.setShortestPath(s);
     l.moveOneStep();
     EXPECT_EQ((*(NodePoint*)l.getLocation()).getPoint().getX()!= 1, true)
@@ -88,7 +88,7 @@ TEST(luxuryCabTest,setTheShortestPath){//check the cabId of the cab.
     Bfs bfs;
     NodePoint* start = new NodePoint(0,0);
     NodePoint* end = new NodePoint(1,1);
-    stack<AbstractNode*> s = bfs.theShortestWay(matrix.getNode(start),matrix.getNode(end));
+    deque<AbstractNode*> s = bfs.theShortestWay(matrix.getNode(start),matrix.getNode(end));
     l.setShortestPath(s);
     l.moveOneStep();
     EXPECT_EQ((*(NodePoint*)l.getLocation()).getPoint().getX()!= 1, true)

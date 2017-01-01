@@ -1,7 +1,7 @@
 //
 // Created by liav on 01/12/16.
 //
-
+#include <deque>
 #include "Driver.h"
 
 Driver::Driver(int driverId2, int age2, char maritalStatus){
@@ -108,11 +108,11 @@ void Driver::startDriving(Matrix*& matrix){
     AbstractNode* destination = matrix->getNode(currentTrip->getSource());
     Bfs* b = myCab->getNavigator();
     //finds a path from the drivers current location and where the passanger awaits.
-    stack<AbstractNode*> stack1 = b->theShortestWay(source,destination);
-    if(!stack1.empty()) {//pops the first element which is the current location.
-        stack1.pop();
+    deque<AbstractNode*> deque1 = b->theShortestWay(source,destination);
+    if(!deque1.empty()) {//pops the first element which is the current location.
+        deque1.pop_front();
     }
-    myCab->setShortestPath(stack1);//sets the path as the current path.
+    myCab->setShortestPath(deque1);//sets the path as the current path.
     while (*(NodePoint*)myCab->getLocation() != *(NodePoint*)currentTrip->getSource()){
         //drives through the taxi.
          myCab->addMetersPassed(myCab->moveOneStep());
@@ -120,11 +120,11 @@ void Driver::startDriving(Matrix*& matrix){
     AbstractNode* source1 = matrix->getNode(currentTrip->getSource());
     AbstractNode* destination1 = matrix->getNode(currentTrip->getDestination());
     //finds a path from the current location to the destination - this is the passangers path.
-    stack<AbstractNode*> stack2 = b->theShortestWay(source1,destination1);
-    if(!stack2.empty()) {
-        stack2.pop();
+    deque<AbstractNode*> deque2 = b->theShortestWay(source1,destination1);
+    if(!deque2.empty()) {
+        deque2.pop_front();
     }
-    myCab->setShortestPath(stack2);//sets the path as the current drive.
+    myCab->setShortestPath(deque2);//sets the path as the current drive.
     while(*(NodePoint*)myCab->getLocation()!=*(NodePoint*)currentTrip->getDestination()){
         //drive to destination.
         int metersPassed = myCab->moveOneStep();
