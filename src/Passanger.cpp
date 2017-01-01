@@ -9,6 +9,8 @@ Passanger::Passanger(NodePoint*& start, NodePoint*& end) {
 
 }
 int Passanger::satisfactionFromRide(){
+    int x=2;
+
     return rand()%6;
 }
 
