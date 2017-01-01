@@ -66,14 +66,14 @@ int main(int argc, char *argv[]){
    // cout << *gp2;
 */
 
-    Driver p (123, 30, 'M', 12345, 10);
+    Driver* p = new Driver (123, 30, 'M', 12345, 10);
     string serializedPoint ;
     boost::iostreams::back_insert_device<std::string> inserter(serializedPoint);
     boost::iostreams::stream<boost::iostreams::back_insert_device<std::string> > s(inserter);
     boost::archive::binary_oarchive oa(s);
     oa << p;
     s.flush();
-    Driver p1(0, 0, 'M', 0, 0) ;
+    Driver* p1;
     boost::iostreams::basic_array_source<char> device(serializedPoint.c_str(), serializedPoint.size());
     boost::iostreams::stream<boost::iostreams::basic_array_source<char> > s2(device);
     boost::archive::binary_iarchive ia(s2);

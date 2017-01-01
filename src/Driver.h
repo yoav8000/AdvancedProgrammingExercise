@@ -49,7 +49,7 @@ public:
     Driver(int driverId2, int age2, char maritalStatus);
     Driver(int driverId1, int age1, char maritalStatus,int vid);
     Driver(int driverId1, int age1, char maritalStatus,int vid, int yearsOfExp);
-
+    Driver();
     friend class boost::serialization::access;
     template<class Archive>
 

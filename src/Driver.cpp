@@ -41,6 +41,18 @@ Driver::Driver(int driverId1, int age1, char maritalStatus,int vid, int yearsOfE
     currentTrip=0;
 }
 
+Driver::Driver(){
+    driverId=0;
+    age=0;
+    status=0;
+    vehicleId=0;
+    yearsOfExperience=0;
+    available= true;
+    avarageSatisfaction=0;
+    myCab=0;
+    currentTrip=0;
+}
+
 void Driver::setAvailable(bool avail){
 //sets the driver as available for future trips..
     available=avail;
