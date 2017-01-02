@@ -93,6 +93,7 @@ public:
 
     virtual int moveOneStep() =0;//returns the amount of steps did and moves the cab.
     virtual void addMetersPassed(int meters)=0;// add meters to the meters member.
+    virtual void setLocation(AbstractNode* location1)=0;// add meters to the meters member.
     virtual ~AbstractCab()=0;//destructor.
 
 

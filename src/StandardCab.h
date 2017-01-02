@@ -58,6 +58,7 @@ public:
     deque<AbstractNode*> getShortestPath(); //for debugging.
     void addMetersPassed(int meters);
     int getMeterPassed();
+    void setLocation(AbstractNode* location1);
     ~StandardCab();
 
 };

@@ -15,7 +15,7 @@ Driver::Driver(int driverId2, int age2, char maritalStatus){
     myCab=0;
     currentTrip=0;
 }
-
+//construcor.
 Driver::Driver(int driverId1, int age1, char maritalStatus, int vid){
     driverId = driverId1;
     age = age1;
@@ -27,9 +27,8 @@ Driver::Driver(int driverId1, int age1, char maritalStatus, int vid){
     myCab=0;
     currentTrip=0;
 }
-
-Driver::Driver(int driverId1, int age1, char maritalStatus,int vid, int yearsOfExp) {
 //construcor.
+Driver::Driver(int driverId1, int age1, char maritalStatus,int vid, int yearsOfExp) {
     driverId=driverId1;
     age=age1;
     status=maritalStatus;
@@ -40,7 +39,7 @@ Driver::Driver(int driverId1, int age1, char maritalStatus,int vid, int yearsOfE
     myCab=0;
     currentTrip=0;
 }
-
+//construcor.
 Driver::Driver(){
     driverId=0;
     age=0;
@@ -52,7 +51,7 @@ Driver::Driver(){
     myCab=0;
     currentTrip=0;
 }
-
+//construcor.
 void Driver::setAvailable(bool avail){
 //sets the driver as available for future trips..
     available=avail;

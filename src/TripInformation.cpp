@@ -3,6 +3,7 @@
 //
 
 #include "TripInformation.h"
+#include "Bfs.h"
 
 TripInformation::TripInformation(){ //for debugging
     rideId = 0;
@@ -62,6 +63,24 @@ double TripInformation::getTariff(){
 int TripInformation:: getRideId(){
     return rideId;
 };
+
+AbstractNode* TripInformation::getNextPointOnRounte(){
+    if(shortestPath->empty()){
+        return 0;// signals that were at the end of the route.
+    } else {
+        AbstractNode* p1 = shortestPath->front();
+        shortestPath->pop_front();
+        return p1;
+    }
+}
+
+void TripInformation::setShortestPath(deque<AbstractNode*>& path){
+    shortestPath= &path;
+}
+
+
+
+
 
  TripInformation::~TripInformation() {
      delete(source);

@@ -96,6 +96,12 @@ void Menu::getInput(){
                                                                        startX, startY,
                                                                        endX, endY, numOfPassangers,
                                                                        tariff, timeOfStart);
+                Bfs* b = taxiCenter->getNavigator();//get the navigator from the taxi center.
+                AbstractNode* source = matrix->getNode(tripInformation->getSource());// get the source of the trip.
+                AbstractNode* destination = matrix->getNode(tripInformation->getDestination()); // get the dest.
+                //finds a path from the drivers current location and where the passanger awaits.
+                deque<AbstractNode*> deque1 = b->theShortestWay(source,destination);//get the path of the trip.
+                tripInformation->setShortestPath(deque1);
                 //create a new trip.
                 taxiCenter->addTrip(tripInformation);// add the trip to the taxicenter.
                 break;

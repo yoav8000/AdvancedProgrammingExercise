@@ -39,6 +39,7 @@ private:
     int numberOfPassangers;
     double tariff;
     int timeOfStart;
+    deque <AbstractNode*>* shortestPath;
 
 public:
     // constructor
@@ -59,6 +60,7 @@ public:
         ar & numberOfPassangers;
         ar & tariff;
         ar & timeOfStart;
+        ar &shortestPath;
     }
 
 
@@ -72,6 +74,8 @@ public:
     AbstractNode*& getDestination();
     void setTariff(double tariff);
     double getTariff();
+    AbstractNode* getNextPointOnRounte();
+     void setShortestPath(deque<AbstractNode*>& path);
     ~TripInformation();
 
 

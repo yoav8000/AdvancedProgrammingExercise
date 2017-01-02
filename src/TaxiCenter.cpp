@@ -9,6 +9,8 @@
  * the class that holds all of the cabs, trips and drivers.
  */
 TaxiCenter::TaxiCenter(){
+    clock = 0;
+    navigator = new Bfs();
 };//constructor.
 void TaxiCenter::answerCalls(){};//a method that answer calls and adds a trip accordingly.
 
@@ -47,6 +49,10 @@ AbstractNode* TaxiCenter::getDriverLocation(int id) {
         }
     }
     return 0;
+}
+
+Bfs*& TaxiCenter::getNavigator() {
+    return navigator;
 }
 
 TaxiCenter::~TaxiCenter() {};

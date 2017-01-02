@@ -13,7 +13,7 @@
 #include "AbstractCab.h"
 #include<list>
 #include <vector>
-
+#include "Bfs.h"
 using namespace std;
 /*
  * class name: TaxiCenter.
@@ -26,6 +26,8 @@ map<int,Driver*> driversMap;//done.
 deque<TripInformation*> tripDeque;//done.
   //  map<int, AbstractCab*> cabsMap;
     vector<AbstractCab*> cabVector;
+    int clock;
+    Bfs* navigator;
 
 public:
     TaxiCenter();//constructor.
@@ -37,6 +39,7 @@ public:
     deque<TripInformation*>& getTripDeque();// a method that returns a deque of trips.
     vector<AbstractCab*>& getCabVector();// a method that returns a list of cabs.
     AbstractNode* getDriverLocation(int id);
+    Bfs*& getNavigator();
     ~TaxiCenter();
 
 };

@@ -58,6 +58,7 @@ int StandardCab::getCabId() {
 int StandardCab:: moveOneStep(){
   location = shortestPath->front();
   shortestPath->pop_front();
+    meters+=1;
  return 1;
 }// the method that moves the cab.
 
@@ -80,6 +81,11 @@ void StandardCab::addMetersPassed(int meters1) {
 int StandardCab::getMeterPassed() {
  return meters;
 }
+
+void StandardCab::setLocation(AbstractNode* location1) {
+    location = location1;
+}
+
 
 StandardCab::~StandardCab() {
  delete(navigator);

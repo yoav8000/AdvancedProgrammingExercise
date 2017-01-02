@@ -61,6 +61,7 @@ public:
     int moveOneStep();
     void addMetersPassed(int meters);
     int getMeterPassed();
+    void setLocation(AbstractNode* location1);
     ~LuxuryCab();//destructor.
 
 };

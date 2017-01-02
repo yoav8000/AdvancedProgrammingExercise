@@ -3,7 +3,7 @@
 //
 #include "AbstractCab.h"
 #include "LuxuryCab.h"
-#include <boost/serialization/export.hpp>
+
 
 //constructor.
 LuxuryCab::LuxuryCab(int cabId1 ,int meters1, char manufacturer1,
@@ -46,10 +46,12 @@ int LuxuryCab:: moveOneStep(){
         shortestPath->pop_front();
         location=shortestPath->front();
         shortestPath->pop_front();
+        meters+=2;
         return 2;
     } else {
         location=shortestPath->front();
         shortestPath->pop_front();
+        meters+=1;
         return 1;
     }
 }
@@ -83,6 +85,13 @@ void LuxuryCab::addMetersPassed(int meters1) {
 int LuxuryCab::getMeterPassed() {
     return meters;
 }
+
+void LuxuryCab::setLocation(AbstractNode* location1) {
+    location = location1;
+}
+
+
+
 LuxuryCab::~LuxuryCab(){
     delete(navigator);
 };//destructor.
