@@ -31,7 +31,6 @@
 #include <boost/archive/binary_iarchive.hpp>
 #include <boost/serialization/deque.hpp>
 #include <boost/serialization/assume_abstract.hpp>
-#include <boost/serialization/stack.hpp>
 
 using namespace std;
 using namespace boost::archive;
@@ -68,7 +67,6 @@ public:
     template<class Archive>
     void serialize(Archive &ar, const unsigned int version)
     {
-
         ar & navigator;
         ar & cabId;
         ar & type;
@@ -84,7 +82,7 @@ public:
 
     //getters and setters.
     virtual int getType()=0;
-    virtual AbstractNode* getLocation()=0;
+    virtual AbstractNode*& getLocation()=0;
     virtual int getCabId()=0;
     virtual int getMeterPassed()=0;
     virtual void setShortestPath(deque<AbstractNode*>& path)=0;
@@ -93,7 +91,7 @@ public:
 
     virtual int moveOneStep() =0;//returns the amount of steps did and moves the cab.
     virtual void addMetersPassed(int meters)=0;// add meters to the meters member.
-    virtual void setLocation(AbstractNode* location1)=0;// add meters to the meters member.
+    virtual void setLocation(AbstractNode*& location1)=0;// add meters to the meters member.
     virtual ~AbstractCab()=0;//destructor.
 
 

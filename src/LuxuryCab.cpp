@@ -3,7 +3,7 @@
 //
 #include "AbstractCab.h"
 #include "LuxuryCab.h"
-
+#include <boost/serialization/export.hpp>
 
 //constructor.
 LuxuryCab::LuxuryCab(int cabId1 ,int meters1, char manufacturer1,
@@ -21,13 +21,12 @@ LuxuryCab::LuxuryCab(int cabId1 ,int meters1, char manufacturer1,
 
 LuxuryCab::LuxuryCab() {
     cabId=0;
+    type=1;
     meters=0;
     manufacturer = 0;
     color=0;
-    coefficient=2;
-    type =2;
-    location = 0;
-    speed =2;
+    coefficient=1;
+    speed=0;
     navigator=new Bfs();
 }
 
@@ -59,7 +58,7 @@ int LuxuryCab:: moveOneStep(){
 int LuxuryCab::getType() {
     return 2;
 }
-AbstractNode* LuxuryCab::getLocation() {
+AbstractNode*& LuxuryCab::getLocation() {
     return location;
 }
 int LuxuryCab::getCabId() {
@@ -86,7 +85,7 @@ int LuxuryCab::getMeterPassed() {
     return meters;
 }
 
-void LuxuryCab::setLocation(AbstractNode* location1) {
+void LuxuryCab::setLocation(AbstractNode*& location1) {
     location = location1;
 }
 
@@ -96,4 +95,4 @@ LuxuryCab::~LuxuryCab(){
     delete(navigator);
 };//destructor.
 
-//BOOST_CLASS_EXPORT_GUID(AbstractCab,"AbstractCab");
+BOOST_CLASS_EXPORT_GUID(LuxuryCab,"LuxuryCab");

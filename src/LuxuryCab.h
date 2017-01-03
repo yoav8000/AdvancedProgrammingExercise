@@ -22,7 +22,7 @@
 #include <boost/archive/binary_oarchive.hpp>
 #include <boost/archive/binary_iarchive.hpp>
 #include <boost/serialization/deque.hpp>
-#include <boost/serialization/stack.hpp>
+
 
 using namespace std;
 using namespace boost::archive;
@@ -41,9 +41,6 @@ public:
     void serialize(Archive &ar, const unsigned int version)
     {
         ar&boost::serialization::base_object<AbstractCab>(*this);
-      //  ar.template register_type< AbstractCab>();
-       //  ar&boost::serialization::base_object_<AbstractNode>(*this);
-        //ar & BOOST_SERIALIZATION_BASE_OBJECT_NVP(AbstractCab);
     }
 
     //getters and setters.
@@ -51,7 +48,7 @@ public:
     int getSpeed();
     float getTariff();
     int getType();
-    AbstractNode* getLocation();
+    AbstractNode*& getLocation();
     int getCabId();
     Bfs*& getNavigator();
     void setShortestPath(deque<AbstractNode*>& path);
@@ -61,7 +58,7 @@ public:
     int moveOneStep();
     void addMetersPassed(int meters);
     int getMeterPassed();
-    void setLocation(AbstractNode* location1);
+    void setLocation(AbstractNode*& location1);
     ~LuxuryCab();//destructor.
 
 };

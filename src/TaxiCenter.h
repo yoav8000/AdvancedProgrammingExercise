@@ -23,7 +23,7 @@ class TaxiCenter {
 private:
     //members.
 map<int,Driver*> driversMap;//done.
-deque<TripInformation*> tripDeque;//done.
+vector<TripInformation*> tripDeque;//done.
   //  map<int, AbstractCab*> cabsMap;
     vector<AbstractCab*> cabVector;
     int clock;
@@ -36,10 +36,12 @@ public:
     void addTrip(TripInformation*& trip);// a method that add a trip.
     void addCab(AbstractCab*& abstractCab);// a method that adds a cab.
     map<int,Driver*>& getDriversMap();// a method that returns a map of the drivers.
-    deque<TripInformation*>& getTripDeque();// a method that returns a deque of trips.
+    vector<TripInformation*>& getTripDeque();// a method that returns a deque of trips.
     vector<AbstractCab*>& getCabVector();// a method that returns a list of cabs.
     AbstractNode* getDriverLocation(int id);
     Bfs*& getNavigator();
+    int getTime();
+    void increaseClockBy1();
     ~TaxiCenter();
 
 };

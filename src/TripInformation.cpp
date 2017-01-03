@@ -64,11 +64,9 @@ int TripInformation:: getRideId(){
     return rideId;
 };
 
-AbstractNode* TripInformation::getNextPointOnRounte(){
-    if(shortestPath->empty()){
-        return 0;// signals that were at the end of the route.
-    } else {
-        AbstractNode* p1 = shortestPath->front();
+AbstractNode*& TripInformation::getNextPointOnRounte(){
+    if(!shortestPath->empty()) {
+        AbstractNode *&p1 = shortestPath->front();
         shortestPath->pop_front();
         return p1;
     }
@@ -79,10 +77,18 @@ void TripInformation::setShortestPath(deque<AbstractNode*>*& path){
 }
 
 unsigned long TripInformation::getRouteLength(){
-    return  shortestPath->size();
+    if(shortestPath!= 0) {
+        return shortestPath->size();
+    }
+    return 0;
 }
 
-
+int TripInformation::getStartTime(){
+    return timeOfStart;
+}
+void TripInformation::setStartTime(int s){
+    timeOfStart=s;
+}
 
  TripInformation::~TripInformation() {
      delete(shortestPath);

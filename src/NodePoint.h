@@ -56,10 +56,12 @@ public:
     {
         ar&boost::serialization::base_object<AbstractNode>(*this);
         ar & flag;
+       // AbstractNode* papa;
         ar & p;
-        ar & neighbors;
+       // ar & neighbors;
         ar & isObstacle;
     }
+
 
 
     // "==" definition

@@ -63,8 +63,8 @@ public:
         ar & yearsOfExperience;
         ar & avarageSatisfaction;
         ar & available;
-        ar & myCab;
-        ar & currentTrip;
+        //ar & myCab;
+        //ar & currentTrip;
     }
 
 
@@ -93,7 +93,7 @@ public:
 
     void startDriving(Matrix*& matrix);
     // the method notifies the cab to move one step until it gets to the destination.
-    void moveOneStep();
+    void moveOneStep(int clientFlag);
 
 
 

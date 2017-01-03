@@ -3,6 +3,8 @@
 //
 #include <boost/serialization/export.hpp>
 #include "StandardCab.h"
+#include <deque>
+using namespace std;
 //constructor.
 StandardCab::StandardCab(int cabId1,int meters1, char manufacturer1,
                          char color1,AbstractNode*& l){
@@ -15,7 +17,7 @@ StandardCab::StandardCab(int cabId1,int meters1, char manufacturer1,
  location = l;
  speed=1;
  navigator=new Bfs();
-
+    shortestPath = 0;
 }
 
 StandardCab::StandardCab() {
@@ -25,9 +27,8 @@ StandardCab::StandardCab() {
   manufacturer = 0;
   color=0;
   coefficient=1;
- location = 0;
- speed=0;
- navigator=new Bfs();
+  speed=0;
+  navigator=new Bfs();
 }
 
 //getters and setters.
@@ -47,7 +48,7 @@ float StandardCab::getTariff(){
 int StandardCab::getType() {
  return type;
 }
-AbstractNode* StandardCab::getLocation() {
+AbstractNode*& StandardCab::getLocation() {
  return location;
 }
 
@@ -82,7 +83,7 @@ int StandardCab::getMeterPassed() {
  return meters;
 }
 
-void StandardCab::setLocation(AbstractNode* location1) {
+void StandardCab::setLocation(AbstractNode*& location1) {
     location = location1;
 }
 
@@ -91,4 +92,4 @@ StandardCab::~StandardCab() {
  delete(navigator);
 };//destructor.
 
-BOOST_CLASS_EXPORT_GUID(AbstractCab,"AbstractCab");
+BOOST_CLASS_EXPORT_GUID(StandardCab,"StandardCab");

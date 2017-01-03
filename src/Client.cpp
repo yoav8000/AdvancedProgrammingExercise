@@ -25,14 +25,13 @@ using namespace boost::archive;
 
 
 //BOOST_CLASS_EXPORT_GUID(AbstractCab,"AbstractCab");
-BOOST_CLASS_EXPORT(StandardCab);
-BOOST_CLASS_EXPORT(LuxuryCab);
+//BOOST_CLASS_EXPORT(StandardCab);
+//BOOST_CLASS_EXPORT(LuxuryCab);
 
 int main(int argc, char *argv[]){
     int portNumber = atoi(argv[1]); // getting the port number from the arguments of the main.
     Socket* socket = new Udp(0,portNumber);//creating a new socket -udp.
     socket->initialize();   //initialize the socket.
-
     char buffer[1024];  // define a buffer for the serialization.
     int id,age,experience,vehicleId;
     char status, dummy;
@@ -58,5 +57,32 @@ int main(int argc, char *argv[]){
     boost::archive::binary_iarchive ia(s2);
     ia>>mycab;
     driver->setCab(mycab);
+    int endFlag = 0;
+    int clientFlag =1;
+    while(endFlag!=1){
+        socket->reciveData(buffer,sizeof(buffer));
+        if(strcmp(buffer,"AssignTrip") == 0) {
+            TripInformation* tripInformation;
+            socket->reciveData(buffer,sizeof(buffer));
+            boost::iostreams::basic_array_source<char> device(buffer,sizeof(buffer));
+            boost::iostreams::stream<boost::iostreams::basic_array_source<char> > s2(device);
+            boost::archive::binary_iarchive ia(s2);
+            ia>>tripInformation;
+            driver->setCurrentTrip(tripInformation);
+        }
+
+        if(strcmp(buffer,"Drive") == 0){
+            driver->moveOneStep(clientFlag);
+        }
+
+        if(strcmp(buffer,"ShutDown") == 0){
+            delete (driver->getCab()->getLocation());
+            delete (driver);
+            delete (mycab);
+            endFlag=1;
+        }
+    }
+
+    delete (socket);
 
 }

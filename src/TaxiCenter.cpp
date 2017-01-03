@@ -31,7 +31,7 @@ map<int,Driver*>& TaxiCenter::getDriversMap(){
 }// a method that returns the map of drivers.
 
 
-deque<TripInformation*>& TaxiCenter::getTripDeque(){
+vector<TripInformation*>& TaxiCenter::getTripDeque(){
     return tripDeque;
 }// a method that returns the trip deque.
 
@@ -51,10 +51,22 @@ AbstractNode* TaxiCenter::getDriverLocation(int id) {
     return 0;
 }
 
+int TaxiCenter::getTime(){
+    return clock;
+}
+
+void TaxiCenter::increaseClockBy1(){
+    clock+=1;
+}
+
+
+
 Bfs*& TaxiCenter::getNavigator() {
     return navigator;
 }
 
-TaxiCenter::~TaxiCenter() {};
+TaxiCenter::~TaxiCenter() {
+    delete (navigator);
+};
 
 

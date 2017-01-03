@@ -41,6 +41,8 @@ NodePoint::NodePoint() {
     papa = 0;
     flag = false;
     isObstacle=0;
+    p = Point(0,0);
+
 };
 
 
@@ -119,6 +121,5 @@ Point NodePoint::getPoint(){
 }
 
 NodePoint::~NodePoint() {
-
 }
 BOOST_CLASS_EXPORT_GUID(NodePoint,"NodePoint");

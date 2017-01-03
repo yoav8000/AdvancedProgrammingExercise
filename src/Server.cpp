@@ -28,8 +28,8 @@
 using namespace std;
 using namespace boost::archive;
 
-BOOST_CLASS_EXPORT(StandardCab);
-BOOST_CLASS_EXPORT(LuxuryCab);
+//BOOST_CLASS_EXPORT(StandardCab);
+//BOOST_CLASS_EXPORT(LuxuryCab);
 
 int main(int argc, char* argv[]){
     TaxiCenter* taxiCenter = new TaxiCenter();

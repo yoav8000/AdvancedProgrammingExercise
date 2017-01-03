@@ -23,7 +23,7 @@
 #include <boost/archive/binary_oarchive.hpp>
 #include <boost/archive/binary_iarchive.hpp>
 #include <boost/serialization/deque.hpp>
-#include <boost/serialization/stack.hpp>
+
 
 using namespace std;
 using namespace boost::archive;
@@ -50,7 +50,7 @@ public:
     int getSpeed();
     float getTariff();
     int getType();
-    AbstractNode* getLocation();
+    AbstractNode*& getLocation();
     int moveOneStep();//the method that moves the cab.
     int getCabId();
     Bfs*& getNavigator();
@@ -58,7 +58,7 @@ public:
     deque<AbstractNode*> getShortestPath(); //for debugging.
     void addMetersPassed(int meters);
     int getMeterPassed();
-    void setLocation(AbstractNode* location1);
+    void setLocation(AbstractNode*& location1);
     ~StandardCab();
 
 };
