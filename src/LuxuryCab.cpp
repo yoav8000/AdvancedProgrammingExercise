@@ -9,19 +9,21 @@
 LuxuryCab::LuxuryCab(int cabId1 ,int meters1, char manufacturer1,
                      char color1, AbstractNode*& l){
     cabId=cabId1;
+    type=2;
     meters=meters1;
     manufacturer = manufacturer1;
     color=color1;
-    coefficient=2;
-    type =2;
+    coefficient=1;
     location = l;
-    speed =2;
+    speed=1;
     navigator=new Bfs();
+    shortestPath = 0;
+
 }
 
 LuxuryCab::LuxuryCab() {
     cabId=0;
-    type=1;
+    type=2;
     meters=0;
     manufacturer = 0;
     color=0;

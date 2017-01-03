@@ -7,8 +7,8 @@
 
 TripInformation::TripInformation(){ //for debugging
     rideId = 0;
-    source = new NodePoint(0,0);
-    destination = new NodePoint(0,0);
+    source = 0;
+    destination =0;
     tariff = 0;
     numberOfPassangers=0;
     timeOfStart=0;
