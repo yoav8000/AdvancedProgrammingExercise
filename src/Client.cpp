@@ -27,75 +27,36 @@ using namespace boost::archive;
 //BOOST_CLASS_EXPORT_GUID(AbstractCab,"AbstractCab");
 BOOST_CLASS_EXPORT(StandardCab);
 BOOST_CLASS_EXPORT(LuxuryCab);
-/*
+
 int main(int argc, char *argv[]){
-/*
     int portNumber = atoi(argv[1]); // getting the port number from the arguments of the main.
     Socket* socket = new Udp(0,portNumber);//creating a new socket -udp.
-    socket->initialize();
+    socket->initialize();   //initialize the socket.
 
-    char buffer[1024];
+    char buffer[1024];  // define a buffer for the serialization.
     int id,age,experience,vehicleId;
     char status, dummy;
     cin>>id>>dummy>>age>>dummy>>status>>dummy>>experience>>dummy>>vehicleId;
-    Driver* driver = new Driver(id,age,status,vehicleId,experience);
+    Driver* driver = new Driver(id,age,status,vehicleId,experience);    //receive new driver.
 
-    string serializedDriver = 0;
+    //serialized the driver.
+    string serializedDriver ;
     boost::iostreams::back_insert_device<std::string> inserter(serializedDriver);
     boost::iostreams::stream<boost::iostreams::back_insert_device<std::string> > s(inserter);
     boost::archive::binary_oarchive oa(s);
     oa << driver;
     s.flush();
 
+    //send the serialized driver to the server.
+    socket->sendData(serializedDriver);
+    AbstractCab* mycab;
 
-    string serializedNodePoint = 0;
-    boost::iostreams::back_insert_device<std::string> inserter(serializedNodePoint);
-    boost::iostreams::stream<boost::iostreams::back_insert_device<std::string> > s(inserter);
-    boost::archive::binary_oarchive oa(s);
-    oa << serializedNodePoint;
-    s.flush();
-
-    cout << serializedNodePoint << endl;
-
-    AbstractNode *an;
-    boost::iostreams::basic_array_source<char> device(serializedNodePoint.c_str(), serializedNodePoint.size());
+    //received the matching taxi from the server for the driver sent before.
+    socket->reciveData(buffer,sizeof(buffer));
+    boost::iostreams::basic_array_source<char> device(buffer,sizeof(buffer));
     boost::iostreams::stream<boost::iostreams::basic_array_source<char> > s2(device);
     boost::archive::binary_iarchive ia(s2);
-    ia >> serializedNodePoint;
-
-   // cout << *gp2;
-*/
-/*
-    TaxiCenter* taxiCenter = new TaxiCenter();
-    Matrix* matrix= new Matrix(3,3);
-    TripInformation *p = new TripInformation(1,2,2,0,1,2,30,8);
-    Bfs* b = taxiCenter->getNavigator();//get the navigator from the taxi center.
-    AbstractNode* source = matrix->getNode(p->getSource());// get the source of the trip.
-    AbstractNode* destination = matrix->getNode(p->getDestination()); // get the dest.
-    //finds a path from the drivers current location and where the passanger awaits.
-    deque<AbstractNode*> deque1 = b->theShortestWay(source,destination);//get the path of the trip.
-    p->setShortestPath(deque1);
-
-
-
-    /*
-    Driver* p = new Driver (123, 30, 'M', 12345, 10);
-    */
-/*
-     string serializedPoint ;
-    boost::iostreams::back_insert_device<std::string> inserter(serializedPoint);
-    boost::iostreams::stream<boost::iostreams::back_insert_device<std::string> > s(inserter);
-    boost::archive::binary_oarchive oa(s);
-    oa << p;
-    s.flush();
-    TripInformation* p1;
-    boost::iostreams::basic_array_source<char> device(serializedPoint.c_str(), serializedPoint.size());
-    boost::iostreams::stream<boost::iostreams::basic_array_source<char> > s2(device);
-    boost::archive::binary_iarchive ia(s2);
-    ia >> p1;
-    deque<AbstractNode*> deque2 = b->theShortestWay(source,destination);
-    int x=2;
-
+    ia>>mycab;
+    driver->setCab(mycab);
 
 }
-*/

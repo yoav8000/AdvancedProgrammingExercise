@@ -85,6 +85,7 @@ public:
     NodePoint(const NodePoint &obj);
     // add to the deque Node which near to this NodePoint
     void addNeighbor(AbstractNode* node);
+    Point getPoint();
     ~NodePoint();
 };
 

@@ -112,6 +112,12 @@ NodePoint:: NodePoint(const NodePoint &obj){
 void NodePoint::addNeighbor(AbstractNode* node){
     neighbors.push_back(node);
 }
+
+Point NodePoint::getPoint(){
+    Point p1 = p;
+    return p1;
+}
+
 NodePoint::~NodePoint() {
 
 }

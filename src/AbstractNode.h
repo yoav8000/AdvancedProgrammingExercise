@@ -59,7 +59,7 @@ public:
     virtual std::deque<AbstractNode*> getNeighbors() = 0;
     // return the father of this Node
     virtual AbstractNode* getPapa() = 0;
-
+    virtual Point getPoint() = 0;//added this function to return the point of the abstractnode.
     // function that know to print the values of point in this way (x,y)
     friend std::ostream &operator<<( std::ostream &output, const AbstractNode &r);
     virtual void setIsObstacle() = 0;// set the node as an obastacle.

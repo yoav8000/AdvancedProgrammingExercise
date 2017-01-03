@@ -93,7 +93,7 @@ public:
 
     void startDriving(Matrix*& matrix);
     // the method notifies the cab to move one step until it gets to the destination.
-
+    void moveOneStep();
 
 
 

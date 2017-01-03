@@ -74,15 +74,18 @@ AbstractNode* TripInformation::getNextPointOnRounte(){
     }
 }
 
-void TripInformation::setShortestPath(deque<AbstractNode*>& path){
-    shortestPath= &path;
+void TripInformation::setShortestPath(deque<AbstractNode*>*& path){
+    shortestPath= path;
+}
+
+unsigned long TripInformation::getRouteLength(){
+    return  shortestPath->size();
 }
 
 
 
-
-
  TripInformation::~TripInformation() {
+     delete(shortestPath);
      delete(source);
      delete(destination);
  }

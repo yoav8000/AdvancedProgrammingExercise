@@ -74,8 +74,10 @@ public:
     AbstractNode*& getDestination();
     void setTariff(double tariff);
     double getTariff();
-    AbstractNode* getNextPointOnRounte();
-     void setShortestPath(deque<AbstractNode*>& path);
+    AbstractNode*  getNextPointOnRounte();
+    void setShortestPath(deque<AbstractNode*>*& path);
+    unsigned long getRouteLength();
+
     ~TripInformation();
 
 

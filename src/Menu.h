@@ -8,6 +8,8 @@
 
 #include "TaxiCenter.h"
 #include "Matrix.h"
+#include "Socket.h"
+
 /*
  * class name: Menu.
  * the class is in charge of the entire flow of the program.
@@ -20,8 +22,9 @@ private:
     //members.
     TaxiCenter* taxiCenter;
     Matrix* matrix;
+    Socket* socket;
 public:
-    Menu(TaxiCenter*& t);
+    Menu(TaxiCenter*& t, Socket* socket1);
     void getInput();
     //the method takes an input from the user line by line and operates the
     // proper mission accordingly.

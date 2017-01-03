@@ -115,6 +115,16 @@ TripInformation* Driver::getCurrentTrip(){
  * the method makes the driver move one step at a time through the taxi until it gets to the end.
  */
 void Driver::startDriving(Matrix*& matrix){
+
+//for testing.
+    moveOneStep();
+    return;
+    moveOneStep();
+    moveOneStep();
+    moveOneStep();
+
+
+
     AbstractNode* source = matrix->getNode(myCab->getLocation());
     AbstractNode* destination = matrix->getNode(currentTrip->getSource());
     Bfs* b = myCab->getNavigator();
@@ -146,6 +156,37 @@ void Driver::startDriving(Matrix*& matrix){
     delete(currentTrip);
 }
 
+void Driver::moveOneStep(){
+    if(currentTrip->getRouteLength() == 0){
+        return;
+    }
+    if(myCab ->getType() == 2){ // is a luxuryCab
+        if(currentTrip->getRouteLength()>= 2){
+            currentTrip->getNextPointOnRounte();
+            myCab->setLocation(currentTrip->getNextPointOnRounte());
+            myCab->addMetersPassed(2);
+            if(currentTrip->getDestination() == myCab->getLocation()){
+                delete (currentTrip);
+                available = true; //the driver is now available for the next trip.
+            }
+        }else {// the trip is in the length of 1 or  0.
+            myCab->setLocation(currentTrip->getNextPointOnRounte());
+            myCab->addMetersPassed(1);
+            delete (currentTrip);
+            available = true; //the driver is now available for the next trip.
+            //do something we ended the trip.
+        }
+    }else {// StandardCab.
+        NodePoint* p = (NodePoint*)currentTrip->getNextPointOnRounte();
+        myCab->setLocation(p);
+        myCab->addMetersPassed(1);
+        if(*(NodePoint*)currentTrip->getDestination() == *(NodePoint*) myCab->getLocation()){
+            delete (currentTrip);
+            available = true; //the driver is now available for the next trip.
+        }
+    }
 
+
+}
 
 Driver::~ Driver(){}

@@ -4,7 +4,7 @@
 
 using namespace std;
 
-
+/*
 int main(int argc , char**argv) {
     TaxiCenter* taxiCenter = new TaxiCenter();
     Menu menu(taxiCenter);
@@ -12,3 +12,4 @@ int main(int argc , char**argv) {
     delete(taxiCenter);
     return 0;
 }
+*/
