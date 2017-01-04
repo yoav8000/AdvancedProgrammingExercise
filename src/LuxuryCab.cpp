@@ -18,7 +18,6 @@ LuxuryCab::LuxuryCab(int cabId1 ,int meters1, char manufacturer1,
     speed=1;
     navigator=new Bfs();
     shortestPath = 0;
-
 }
 
 LuxuryCab::LuxuryCab() {
@@ -30,6 +29,7 @@ LuxuryCab::LuxuryCab() {
     coefficient=1;
     speed=0;
     navigator=new Bfs();
+    location=0;
 }
 
 //getters and setters.

@@ -33,6 +33,7 @@ int main(int argc, char *argv[]){
     Socket* socket = new Udp(0,portNumber);//creating a new socket -udp.
     socket->initialize();   //initialize the socket.
     char buffer[1024];  // define a buffer for the serialization.
+
     int id,age,experience,vehicleId;
     char status, dummy;
     cin>>id>>dummy>>age>>dummy>>status>>dummy>>experience>>dummy>>vehicleId;

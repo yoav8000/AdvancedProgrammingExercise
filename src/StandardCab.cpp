@@ -29,6 +29,7 @@ StandardCab::StandardCab() {
   coefficient=1;
   speed=0;
   navigator=new Bfs();
+    location=0;
 }
 
 //getters and setters.

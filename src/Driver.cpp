@@ -160,24 +160,22 @@ void Driver::moveOneStep(int clientFlag){
             if(clientFlag) {
                 delete (myCab->getLocation());
             }
-            currentTrip->getNextPointOnRounte();
+            myCab->setLocation(currentTrip->getNextPointOnRounte());
             if(clientFlag) {
                 delete (myCab->getLocation());
             }
             myCab->setLocation(currentTrip->getNextPointOnRounte());
             myCab->addMetersPassed(2);
-            if(currentTrip->getDestination() == myCab->getLocation()){
+            if(*(NodePoint*)currentTrip->getDestination() == *(NodePoint*) myCab->getLocation()){
                 if(clientFlag) {
                     delete (currentTrip);
                     currentTrip =0;
                 }
-                if(clientFlag) {
-                    delete (myCab->getLocation());
-                }
                 available = true; //the driver is now available for the next trip.
             }
-        }else {// the trip is in the length of 1 or  0.
+        }else {// the trip is in the length of 1.
             if(clientFlag) {
+
                 delete (myCab->getLocation());
             }
             myCab->setLocation(currentTrip->getNextPointOnRounte());

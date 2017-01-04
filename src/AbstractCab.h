@@ -75,7 +75,7 @@ public:
         ar & color;
         ar & coefficient;
         ar & speed;
-     //   ar & location;
+        ar & location;
       //  ar & shortestPath;
     }
 
