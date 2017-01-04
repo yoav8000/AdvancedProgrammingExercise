@@ -67,7 +67,6 @@ public:
     template<class Archive>
     void serialize(Archive &ar, const unsigned int version)
     {
-        ar & navigator;
         ar & cabId;
         ar & type;
         ar & meters;
@@ -75,8 +74,6 @@ public:
         ar & color;
         ar & coefficient;
         ar & speed;
-        ar & location;
-      //  ar & shortestPath;
     }
 
 

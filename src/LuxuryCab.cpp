@@ -30,6 +30,7 @@ LuxuryCab::LuxuryCab() {
     speed=0;
     navigator=new Bfs();
     location=0;
+    shortestPath = 0;
 }
 
 //getters and setters.
