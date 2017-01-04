@@ -43,6 +43,8 @@ int LuxuryCab::getSpeed(){
 float LuxuryCab::getTariff(){
     return coefficient;
 }
+
+//may need it to next missions.
 int LuxuryCab:: moveOneStep(){
     if(shortestPath->size()>=2){
         shortestPath->pop_front();

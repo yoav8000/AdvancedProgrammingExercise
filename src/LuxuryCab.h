@@ -55,7 +55,7 @@ public:
     //sets a deque got as a reference as the path.
     deque<AbstractNode*> getShortestPath(); //for debugging.
     // the method that moves the cab.
-    int moveOneStep();
+    int moveOneStep();// may need it for next missions.
     void addMetersPassed(int meters);
     int getMeterPassed();
     void setLocation(AbstractNode*& location1);

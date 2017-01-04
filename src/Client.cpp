@@ -34,7 +34,7 @@ int main(int argc, char *argv[]){
     socket->initialize();   //initialize the socket.
     char buffer[1024];  // define a buffer for the serialization.
 
-    int id,age,experience,vehicleId;
+    int id,age,experience,vehicleId;// recieving a driver.
     char status, dummy;
     cin>>id>>dummy>>age>>dummy>>status>>dummy>>experience>>dummy>>vehicleId;
     Driver* driver = new Driver(id,age,status,vehicleId,experience);    //receive new driver.
@@ -56,20 +56,20 @@ int main(int argc, char *argv[]){
     boost::iostreams::basic_array_source<char> device(buffer,sizeof(buffer));
     boost::iostreams::stream<boost::iostreams::basic_array_source<char> > s2(device);
     boost::archive::binary_iarchive ia(s2);
-    ia>>mycab;
-    driver->setCab(mycab);
+    ia>>mycab;//deserialize the taxi received.
+    driver->setCab(mycab);// setting the taxi as the drivers cab.
     int endFlag = 0;
     int clientFlag =1;
     while(endFlag!=1){
-        socket->reciveData(buffer,sizeof(buffer));
+        socket->reciveData(buffer,sizeof(buffer));//wait for a command.
         if(strcmp(buffer,"AssignTrip") == 0) {
             TripInformation* tripInformation;
-            socket->reciveData(buffer,sizeof(buffer));
+            socket->reciveData(buffer,sizeof(buffer));// receive the trip.
             boost::iostreams::basic_array_source<char> device(buffer,sizeof(buffer));
             boost::iostreams::stream<boost::iostreams::basic_array_source<char> > s2(device);
             boost::archive::binary_iarchive ia(s2);
-            ia>>tripInformation;
-            driver->setCurrentTrip(tripInformation);
+            ia>>tripInformation;// deserialize the trip.
+            driver->setCurrentTrip(tripInformation);// set as the current trip.
         }
 
         if(strcmp(buffer,"Drive") == 0){
