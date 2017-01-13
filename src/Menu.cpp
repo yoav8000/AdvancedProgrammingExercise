@@ -51,17 +51,12 @@ Menu::Menu(TaxiCenter*& t,Socket* socket1) {
     }
 }
 
-
 /*
- * the method is in charge of receiving the input from the user and create
- * the right objects accordingly
- * then it activates the moving method of each object according to the input.
+ * the method gets the amount of obstacles wanted and the x and y coordinate and initializes
+ * them as obstacles on the matrix.
  */
-void Menu::getInput(){
-    char buffer[1024];
-    int x,y, numberOfObstacles=0;
-    cin>>x>>y;// gets the size of the matrix.
-    matrix = new Matrix(x,y);//create the proper matrix with the right measurments.
+void Menu::initializeObstacles(){
+    int numberOfObstacles;
     cin>>numberOfObstacles;//gets the amount of obstacles.
     while (numberOfObstacles){//get each obstacle.
         int xObstacle, yObstacle;
@@ -71,59 +66,209 @@ void Menu::getInput(){
         matrix->getNode((&point))->setIsObstacle();
         numberOfObstacles--;
     }
-    int switchFlag=0;
-    int choice;
-    cin>>choice;//gets the choice from the user.
-    int flag =0;
-    while(flag!=1) {// the loop is active until the user hits the 7 key.
-        if(switchFlag !=0) {// the input receiving from the 2nd iteration.
-            cin >> choice;
+
+
+
+
+}
+/*
+ * the method initializes the matrix according to the size wanted and received by the console.
+ */
+
+void Menu::initializeMatrix() {
+    int x,y;
+    cin>>x>>y;// gets the size of the matrix.
+    matrix = new Matrix(x,y);//create the proper matrix with the right measurments.
+}
+
+
+
+/*
+ * the method gets a serializied driver through a socket and creates it in the server.
+ * using deserialization and returns the drivers vehicle id.
+ */
+
+int Menu::receiveNewDriver() {
+    Driver* driver;
+    // desirialize the driver received from the client.
+    char buffer[1024];
+    socket->reciveData(buffer,sizeof(buffer));  // receive the driver.
+    boost::iostreams::basic_array_source<char> device(buffer,sizeof(buffer));
+    boost::iostreams::stream<boost::iostreams::basic_array_source<char> > s2(device);
+    boost::archive::binary_iarchive ia(s2);
+    ia>>driver;// deserialize the driver.
+    taxiCenter->addDriver(driver);// set as a driver with the proper values.
+    return driver->getVehicleId();
+}
+
+
+
+/*
+ * the method gets a vehicle id of a certain driver and sends through a socket
+ * to the client its cab only serialized.
+ */
+void Menu::sendProperTaxi(int cabId) {
+    string serializedAbstractCab ;
+    map<int, Driver *>::iterator it;//matches drivers and cabs.
+    for (it = taxiCenter->getDriversMap().begin(); it !=
+                                                   taxiCenter->
+                                                           getDriversMap().end();
+         it++) {// find the taxi of the driver.
+        int cabid = it->second->getVehicleId();
+        for (int i = 0; i < taxiCenter->getCabVector().size(); i++) {
+            if (taxiCenter->getCabVector()[i]->getCabId() == cabid) {
+                it->second->setCab(taxiCenter->getCabVector()[i]);
+                // match the driver to the cab.
+                boost::iostreams::back_insert_device<std::string> inserter
+                        (serializedAbstractCab);
+                boost::iostreams::stream<boost::iostreams::back_insert_device<std::string>>
+                        s(inserter);
+                boost::archive::binary_oarchive oa(s);
+                oa << taxiCenter->getCabVector()[i];// serialize the taxi.
+                s.flush();
+                socket->sendData(serializedAbstractCab);//send the taxi to the client.
+
+            }
         }
+    }
+}
+
+
+void Menu::getNewTrip(int id,int startX, int startY,int endX,int  endY, int numOfPassangers,
+                      double tariff, int timeOfStart) {
+
+    TripInformation *tripInformation = new TripInformation(id,
+                                                           startX, startY,
+                                                           endX, endY, numOfPassangers,
+                                                           tariff, timeOfStart);
+    Bfs* b = taxiCenter->getNavigator();//get the navigator from the taxi center.
+    AbstractNode* source = matrix->getNode(tripInformation->getSource());// get the source of the trip.
+    AbstractNode* destination = matrix->getNode(tripInformation->getDestination()); // get the dest.
+    //finds a path from the drivers current location and where the passanger awaits.
+    deque<AbstractNode*>* deque1 =new deque<AbstractNode*> (b->theShortestWay(source,destination));
+    if(!deque1->empty()){
+        deque1->pop_front();
+    }
+    //get the path of the trip.
+    tripInformation->setShortestPath(deque1);
+    //create a new trip.
+    taxiCenter->addTrip(tripInformation);
+    // add the trip to the taxicenter.
+}
+
+
+void Menu::getNewCab(int id,int taxiType, int meters, char carMan,char color){
+    NodePoint* n = new NodePoint(0,0);
+    AbstractNode* n1 = matrix->getNode(n);
+    delete n;
+
+    if (taxiType == 1) {
+        //create the new cab.
+        StandardCab *standardCab = new StandardCab(id, 0, carMan, color,n1);
+        taxiCenter->addCab((AbstractCab *&) standardCab);
+        //add the cab to the taxicenter.
+    } else if (taxiType == 2) {
+        LuxuryCab *luxuryCab = new LuxuryCab(id, 0, carMan, color,n1);
+        taxiCenter->addCab((AbstractCab *&) luxuryCab);
+    }
+
+}
+
+
+/*
+ * the method deletes all aloocated memory during the program.
+ */
+void Menu::shutDownProgram(){
+    map<int, Driver *>::iterator it;//matches drivers and cabs.
+    socket->sendData("ShutDown"); // send the client a shut down command.
+    for (it = taxiCenter->getDriversMap().begin(); it !=
+                                                   taxiCenter->getDriversMap().end(); it++) {
+        delete (it->second);    // delete all of the drivers.
+    }
+    delete (matrix);
+    for(unsigned long i=0;i<taxiCenter->getCabVector().size();i++) {
+        delete (taxiCenter->getCabVector()[i]);// delete the taxis.
+        //check the erase.
+    }
+    for(unsigned long i=0;i<taxiCenter->getTripDeque().size();i++) {
+        delete (taxiCenter->getTripDeque()[i]);//delete the trips.
+    }
+}
+
+/*
+ * signal the clients to drive.
+ */
+void Menu::signalClientToDrive(){
+    socket->sendData("Drive");// send the client a drive command.
+}
+
+/*
+ * move all the drives in the server to maintain their location with accordance to the clients location.
+ */
+void Menu::moveDriversInServer(){
+    int clientFlag =0;
+    map<int, Driver *>::iterator it;
+    for (it = taxiCenter->getDriversMap().begin(); it != taxiCenter->getDriversMap().end(); it++){
+        it->second->moveOneStep(clientFlag);//signal the drivers on the taxi center to move
+        // to maintain their location with the client.
+    }
+}
+
+/*
+ * the method assigns trips to the drivers.
+ */
+void Menu::assignTrips(){
+
+    map<int, Driver *>::iterator it;
+    unsigned long numOfTrips = taxiCenter->getTripDeque().size();
+    int taxiCenterTime =taxiCenter->getTime();
+    for(unsigned long i=0;i < numOfTrips; i++) {// checks if there is a trip that needs to start.
+        if (taxiCenter->getTripDeque()[i]->getStartTime() == taxiCenterTime) {
+            for (it = taxiCenter->getDriversMap().begin(); it != taxiCenter->getDriversMap().end(); it++) {
+                if (it->second->getAvailable()) { // if the driver is available.
+                    it->second->setCurrentTrip(taxiCenter->getTripDeque()[i]);
+                    socket->sendData("AssignTrip");//send the client an assign trip command.
+                    string serializedTrip;
+                    boost::iostreams::back_insert_device<std::string> inserter(serializedTrip);
+                    boost::iostreams::stream<boost::iostreams::back_insert_device<std::string> > s(inserter);
+                    boost::archive::binary_oarchive oa(s);
+                    oa << taxiCenter->getTripDeque()[i];// serialize the trip.
+                    s.flush();
+                    socket->sendData(serializedTrip);// send the client the serialized trip.
+                }
+            }
+        }
+    }
+}
+
+
+/*
+ * the method is in charge of receiving the input from the user and create
+ * the right objects accordingly
+ * then it activates the moving method of each object according to the input.
+ */
+void Menu::getInput(){
+    char buffer[1024];
+    initializeMatrix();// initialize the matrix.
+    initializeObstacles();// initialize the obstacles.
+    int choice = 0;
+
+    // {// the loop is active until the user hits the 7 key.
+      do {
+        cin>>choice;//gets the choice from the user.
         switch (choice) {
             case 1: {// add Driver.
-                switchFlag = 1;
                 int amountOfDrivers;
-                string serializedAbstractCab ;
                 cin>>amountOfDrivers;
-                for(int i=0; i<amountOfDrivers; i++){
-                    Driver* driver;
-                    // desirialize the driver received from the client.
-                    char buffer[1024];
-                    socket->reciveData(buffer,sizeof(buffer));  // receive the driver.
-                    boost::iostreams::basic_array_source<char> device(buffer,sizeof(buffer));
-                    boost::iostreams::stream<boost::iostreams::basic_array_source<char> > s2(device);
-                    boost::archive::binary_iarchive ia(s2);
-                    ia>>driver;// deserialize the driver.
-                    taxiCenter->addDriver(driver);// set as a driver with the proper values.
-                    map<int, Driver *>::iterator it;//matches drivers and cabs.
-                    for (it = taxiCenter->getDriversMap().begin(); it !=
-                                                                   taxiCenter->
-                                                                           getDriversMap().end();
-                         it++) {// find the taxi of the driver.
-                        int cabid = it->second->getVehicleId();
-                        for (int i = 0; i < taxiCenter->getCabVector().size(); i++) {
-                            if (taxiCenter->getCabVector()[i]->getCabId() == cabid) {
-                                it->second->setCab(taxiCenter->getCabVector()[i]);
-                                // match the driver to the cab.
-                                boost::iostreams::back_insert_device<std::string> inserter
-                                        (serializedAbstractCab);
-                                boost::iostreams::stream<boost::iostreams::back_insert_device<std::string>>
-                                        s(inserter);
-                                boost::archive::binary_oarchive oa(s);
-                                oa << taxiCenter->getCabVector()[i];// serialize the taxi.
-                                s.flush();
-                                socket->sendData(serializedAbstractCab);//send the taxi to the client.
-
-                            }
-                        }
-                    }
-
+                int cabId;
+                for(int i=0; i<amountOfDrivers; i++) {
+                    cabId =receiveNewDriver();
+                    sendProperTaxi(cabId);
+                }
+                break;
                 }
 
-                break;
-            }
             case 2: {// add trip.
-                switchFlag = 1;
                 string input;
                 string inputArr[10];
                 int id, startX, startY, endX, endY, numOfPassangers,timeOfStart;
@@ -138,27 +283,12 @@ void Menu::getInput(){
                 numOfPassangers = atoi(inputArr[5].c_str());
                 tariff = atof(inputArr[6].c_str());
                 timeOfStart =atoi(inputArr[7].c_str());
-                TripInformation *tripInformation = new TripInformation(id,
-                                                                       startX, startY,
-                                                                       endX, endY, numOfPassangers,
-                                                                       tariff, timeOfStart);
-                Bfs* b = taxiCenter->getNavigator();//get the navigator from the taxi center.
-                AbstractNode* source = matrix->getNode(tripInformation->getSource());// get the source of the trip.
-                AbstractNode* destination = matrix->getNode(tripInformation->getDestination()); // get the dest.
-                //finds a path from the drivers current location and where the passanger awaits.
-                deque<AbstractNode*>* deque1 =new deque<AbstractNode*> (b->theShortestWay(source,destination));
-                if(!deque1->empty()){
-                    deque1->pop_front();
-                }
-                //get the path of the trip.
-                tripInformation->setShortestPath(deque1);
-                //create a new trip.
-                taxiCenter->addTrip(tripInformation);
-                // add the trip to the taxicenter.
+                getNewTrip( id, startX, startY, endX ,endY,  numOfPassangers, tariff, timeOfStart);
                 break;
             }
+
+
             case 3: {// add Cab.
-                switchFlag = 1;
                 string input;
                 string inputArr[10];
                 int id, taxiType;
@@ -169,27 +299,12 @@ void Menu::getInput(){
                 taxiType = atoi(inputArr[1].c_str());
                 carMan = inputArr[2];
                 color = inputArr[3];
-                if (taxiType == 1) {
-                    NodePoint* n = new NodePoint(0,0);
-                    AbstractNode* n1 = matrix->getNode(n);
-                    delete n;
-                    //create the new cab.
-                    StandardCab *standardCab = new StandardCab(id, 0, *carMan.c_str(),
-                                                               *color.c_str(),n1);
-                    taxiCenter->addCab((AbstractCab *&) standardCab);
-                    //add the cab to the taxicenter.
-                } else if (taxiType == 2) {
-                    NodePoint* n = new NodePoint(0,0);
-                    AbstractNode* n1 = matrix->getNode(n);
-                    delete n;
-                    LuxuryCab *luxuryCab = new LuxuryCab(id, 0, *carMan.c_str(),
-                                                         *color.c_str(),n1);
-                    taxiCenter->addCab((AbstractCab *&) luxuryCab);
-                }
+                getNewCab(id,taxiType, 0, *carMan.c_str(), *color.c_str());
                 break;
             }
+
+
             case 4: {// get the location of a certain driver.
-                switchFlag = 1;
                 string input;
                 string inputArr[10];
                 int id;
@@ -201,63 +316,26 @@ void Menu::getInput(){
                 break;
             }
 
-
             case 7: {// delete all the objects and quit from the program.
-                map<int, Driver *>::iterator it;//matches drivers and cabs.
-                socket->sendData("ShutDown"); // send the client a shut down command.
-                for (it = taxiCenter->getDriversMap().begin(); it !=
-                        taxiCenter->getDriversMap().end(); it++) {
-                    delete (it->second);    // delete all of the drivers.
-                }
-                delete (matrix);
-                for(unsigned long i=0;i<taxiCenter->getCabVector().size();i++) {
-                    delete (taxiCenter->getCabVector()[i]);// delete the taxis.
-                    //check the erase.
-                }
-                for(unsigned long i=0;i<taxiCenter->getTripDeque().size();i++) {
-                    delete (taxiCenter->getTripDeque()[i]);//delete the trips.
-                }
-
-                flag=1;
+                shutDownProgram();
                 break;
             }
             case 9: {   //signals the occupied drivers that it needs to move one step,+ moving the clock.
-                switchFlag = 1;
-                int clientFlag =0;
                 taxiCenter->increaseClockBy1();
-                map<int, Driver *>::iterator it;
-                unsigned long numOfTrips = taxiCenter->getTripDeque().size();
-                socket->sendData("Drive");// send the client a drive command.
-                for (it = taxiCenter->getDriversMap().begin(); it != taxiCenter->getDriversMap().end(); it++){
-                    it->second->moveOneStep(clientFlag);//signal the drivers on the taxi center to move
-                    // to maintain their location with the client.
-                }
-              for(unsigned long i=0;i < numOfTrips; i++) {// checks if there is a trip that needs to start.
-                  if (taxiCenter->getTripDeque()[i]->getStartTime() == taxiCenter->getTime()) {
-                      for (it = taxiCenter->getDriversMap().begin(); it != taxiCenter->getDriversMap().end(); it++) {
-                          if (it->second->getAvailable()) { // if the driver is available.
-                              it->second->setCurrentTrip(taxiCenter->getTripDeque()[i]);
-                              socket->sendData("AssignTrip");//send the client an assign trip command.
-                              string serializedTrip;
-                              boost::iostreams::back_insert_device<std::string> inserter(serializedTrip);
-                              boost::iostreams::stream<boost::iostreams::back_insert_device<std::string> > s(inserter);
-                              boost::archive::binary_oarchive oa(s);
-                              oa << taxiCenter->getTripDeque()[i];// serialize the trip.
-                              s.flush();
-                              socket->sendData(serializedTrip);// send the client the serialized trip.
-                          }
-                      }
-                  }
-              }
+                signalClientToDrive();
+                moveDriversInServer();
+                assignTrips();
                 break;
             }
+
+
             default: {
-                switchFlag=1;
                 cout << "wrong input"<<endl;
                 break;
             }
         }
-    }
+
+    }while(choice!=7);
 }
 
 

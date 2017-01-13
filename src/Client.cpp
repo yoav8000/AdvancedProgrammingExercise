@@ -24,11 +24,31 @@ using namespace boost::archive;
 
 
 
-//BOOST_CLASS_EXPORT_GUID(AbstractCab,"AbstractCab");
-//BOOST_CLASS_EXPORT(StandardCab);
-//BOOST_CLASS_EXPORT(LuxuryCab);
 
 int main(int argc, char *argv[]){
+/*
+    Matrix* m = new Matrix(2000,2000);
+    NodePoint point(0,1);//get the proper node from the matrix.
+    m->getNode((&point))->setIsObstacle();
+    NodePoint point2(1,1);//get the proper node from the matrix.
+    m->getNode((&point2))->setIsObstacle();
+    NodePoint point3(2,2);//get the proper node from the matrix.
+    m->getNode((&point3))->setIsObstacle();
+    Bfs* bfs = new Bfs();
+    NodePoint* S = new NodePoint(0,0);
+    NodePoint* D = new NodePoint(1000,1980);
+    AbstractNode* source = m->getNode(S);
+    AbstractNode* dest = m->getNode(D);
+    deque<AbstractNode*> a1= bfs->theShortestWay(source,dest);
+    while (!a1.empty()) {
+        NodePoint *location = (NodePoint *)a1.front();
+        cout << *location ;
+        a1.pop_front();
+    }
+    int x=2;
+*/
+
+
     int portNumber = atoi(argv[1]); // getting the port number from the arguments of the main.
     Socket* socket = new Udp(0,portNumber);//creating a new socket -udp.
     socket->initialize();   //initialize the socket.

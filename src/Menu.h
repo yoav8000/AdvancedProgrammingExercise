@@ -26,8 +26,21 @@ private:
 public:
     Menu(TaxiCenter*& t, Socket* socket1);
     void getInput();
+    void assignTrips();
+    void moveDriversInServer();
+    void signalClientToDrive();
+    void shutDownProgram();
+    void getNewCab(int id,int taxiType, int meters, char carMan,char color);
     //the method takes an input from the user line by line and operates the
     // proper mission accordingly.
+    void getNewTrip(int id,
+                    int startX, int startY,
+                    int endX, int endY, int numOfPassangers,
+                    double tariff, int timeOfStart);
+    void sendProperTaxi(int cabId);
+    int receiveNewDriver();
+    void initializeObstacles();
+    void initializeMatrix();
     ~Menu();
 
 };
