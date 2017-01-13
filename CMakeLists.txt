@@ -15,8 +15,8 @@ set(SOURCE_FILES src/main.cpp src/Point.cpp src/Point.h  src/AbstractNode.cpp
         src/Passanger.cpp src/Passanger.h src/Socket.cpp src/Socket.h src/Udp.cpp src/Udp.h
         src/TaxiCenter.cpp src/TaxiCenter.h src/Driver.cpp src/Driver.h
          src/TripInformation.cpp src/TripInformation.h
-        src/TripInformation.h
-       src/Menu.cpp src/Menu.h src/Tcp.cpp src/Tcp.h )
+        src/TripInformation.h src/Tcp.cpp src/Tcp.h
+       src/Menu.cpp src/Menu.h)
 #add_executable(ex11 ${SOURCE_FILES})
 add_executable(server src/Server.cpp ${SOURCE_FILES})
 add_executable(client src/Client.cpp ${SOURCE_FILES})
