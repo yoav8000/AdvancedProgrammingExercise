@@ -9,6 +9,8 @@
 #include "TaxiCenter.h"
 #include "Matrix.h"
 #include "Socket.h"
+#include "Communication.h"
+
 
 /*
  * class name: Menu.
@@ -17,12 +19,16 @@
  */
 class Menu {
 private:
+
     void parseInput(string s,string* inputArr);
     // the taxi parses the input received from the user by a delimiter.
     //members.
     TaxiCenter* taxiCenter;
     Matrix* matrix;
     Socket* socket;
+    map<int, int> threds; // map every driver id to index
+
+    Communication* communication; // to communucate between the class
 public:
     Menu(TaxiCenter*& t, Socket* socket1);
     void getInput();
@@ -30,6 +36,7 @@ public:
     void moveDriversInServer();
     void signalClientToDrive();
     void shutDownProgram();
+    static void* ComputeShortestWay(void* trip);
     void getNewCab(int id,int taxiType, int meters, char carMan,char color);
     //the method takes an input from the user line by line and operates the
     // proper mission accordingly.
@@ -41,6 +48,7 @@ public:
     int receiveNewDriver();
     void initializeObstacles();
     void initializeMatrix();
+    static void* threadFunction(void* data1);
     ~Menu();
 
 };

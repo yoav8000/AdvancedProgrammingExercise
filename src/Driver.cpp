@@ -14,6 +14,7 @@ Driver::Driver(int driverId2, int age2, char maritalStatus){
     avarageSatisfaction=0;
     myCab=0;
     currentTrip=0;
+    arriveToDestinationAt=0;
 }
 //construcor.
 Driver::Driver(int driverId1, int age1, char maritalStatus, int vid){
@@ -26,6 +27,7 @@ Driver::Driver(int driverId1, int age1, char maritalStatus, int vid){
     avarageSatisfaction=0;
     myCab=0;
     currentTrip=0;
+    arriveToDestinationAt=0;
 }
 //construcor.
 Driver::Driver(int driverId1, int age1, char maritalStatus,int vid, int yearsOfExp) {
@@ -38,6 +40,7 @@ Driver::Driver(int driverId1, int age1, char maritalStatus,int vid, int yearsOfE
     avarageSatisfaction=0;
     myCab=0;
     currentTrip=0;
+    arriveToDestinationAt=0;
 }
 //construcor.
 Driver::Driver(){
@@ -50,6 +53,7 @@ Driver::Driver(){
     avarageSatisfaction=0;
     myCab=0;
     currentTrip=0;
+    arriveToDestinationAt=0;
 }
 //construcor.
 void Driver::setAvailable(bool avail){
@@ -110,6 +114,12 @@ void Driver::setCurrentTrip(TripInformation *&trip) {
 TripInformation* Driver::getCurrentTrip(){
     return currentTrip;
 }
+int Driver::getArriveToDestinationAt(){
+    return arriveToDestinationAt;
+}
+void Driver::setArriveToDestinationAt(int time){
+    arriveToDestinationAt = time;
+}
 
 /*
  * the method makes the driver move one step at a time through the taxi until it gets to the end.
@@ -148,7 +158,7 @@ void Driver::startDriving(Matrix*& matrix){
     delete(currentTrip);
 }
 */
-void Driver::moveOneStep(int clientFlag){
+void Driver::moveOneStep(int clientFlag, int time){
     if(currentTrip == 0){
         return;
     }
@@ -158,11 +168,16 @@ void Driver::moveOneStep(int clientFlag){
     if(myCab ->getType() == 2){ // is a luxuryCab
         if(currentTrip->getRouteLength()>= 2){
             if(clientFlag) {
+                
                 delete (myCab->getLocation());
+
+                
             }
             myCab->setLocation(currentTrip->getNextPointOnRounte());
             if(clientFlag) {
+                
                 delete (myCab->getLocation());
+
             }
             myCab->setLocation(currentTrip->getNextPointOnRounte());
             myCab->addMetersPassed(2);
@@ -172,10 +187,12 @@ void Driver::moveOneStep(int clientFlag){
                     currentTrip =0;
                 }
                 available = true; //the driver is now available for the next trip.
+                if (time > 0){
+                    arriveToDestinationAt = time;
+                }
             }
         }else {// the trip is in the length of 1.
             if(clientFlag) {
-
                 delete (myCab->getLocation());
             }
             myCab->setLocation(currentTrip->getNextPointOnRounte());
@@ -186,11 +203,16 @@ void Driver::moveOneStep(int clientFlag){
             }
             currentTrip=0;
             available = true; //the driver is now available for the next trip.
+            if (time > 0){
+                arriveToDestinationAt = time;
+            }
             //do something we ended the trip.
         }
     }else {// StandardCab.
         if(clientFlag) {
             delete (myCab->getLocation());
+
+
         }
         myCab->setLocation(currentTrip->getNextPointOnRounte());
         myCab->addMetersPassed(1);
@@ -200,6 +222,9 @@ void Driver::moveOneStep(int clientFlag){
                 currentTrip =0;
             }
             available = true; //the driver is now available for the next trip.
+            if (time > 0){
+                arriveToDestinationAt = time;
+            }
         }
     }
 

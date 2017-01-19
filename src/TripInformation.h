@@ -40,6 +40,7 @@ private:
     double tariff;
     int timeOfStart;
     deque <AbstractNode*>* shortestPath;
+    bool computeShortestWayDone;
 
 public:
     // constructor
@@ -80,6 +81,8 @@ public:
     unsigned long getRouteLength();
     int getStartTime();
     void setStartTime(int s);
+    void setComputeShortestWayDone();
+    bool getComputeShortestWayDone();
     ~TripInformation();
 
 

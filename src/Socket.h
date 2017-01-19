@@ -65,13 +65,21 @@ public:
 	***********************************************************************/
 	virtual int initialize() = 0;
 	/***********************************************************************
+    * function name: acceptNewClient									   *
+    * The Input: get new client							           		   *
+    * The output: the number that return from the accept		           *
+    * The Function operation: sending the required data, using his length  *
+    * and the socket descroptor											   *
+    ***********************************************************************/
+	virtual int openNewClient() = 0;
+	/***********************************************************************
 	* function name: sendData											   *
 	* The Input: string representing the data to send		               *
 	* The output: int number representing the return status		           *
 	* The Function operation: sending the input data to the socket         *
 	* who connect to this socket. pure virtual method					   *
 	***********************************************************************/
-	virtual int sendData(string data) = 0;
+	virtual int sendData(string data, int communication) = 0;
 	/***********************************************************************
 	* function name: recive	`											   *
 	* The Input: none										               *
@@ -79,10 +87,7 @@ public:
 	* The Function operation: getting data from the other socket and print *
 	* the data															   *
 	***********************************************************************/
-	virtual int reciveData(char* buffer, int size) = 0;
-
-
-
+	virtual int reciveData(char* buffer, int size, int communication) = 0;
 
 };
 

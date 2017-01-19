@@ -17,42 +17,18 @@
 #include "StandardCab.h"
 #include "LuxuryCab.h"
 #include "TaxiCenter.h"
-
-
+#include "Tcp.h"
 using namespace std;
 using namespace boost::archive;
 
-
-
-
 int main(int argc, char *argv[]){
-/*
-    Matrix* m = new Matrix(2000,2000);
-    NodePoint point(0,1);//get the proper node from the matrix.
-    m->getNode((&point))->setIsObstacle();
-    NodePoint point2(1,1);//get the proper node from the matrix.
-    m->getNode((&point2))->setIsObstacle();
-    NodePoint point3(2,2);//get the proper node from the matrix.
-    m->getNode((&point3))->setIsObstacle();
-    Bfs* bfs = new Bfs();
-    NodePoint* S = new NodePoint(0,0);
-    NodePoint* D = new NodePoint(1000,1980);
-    AbstractNode* source = m->getNode(S);
-    AbstractNode* dest = m->getNode(D);
-    deque<AbstractNode*> a1= bfs->theShortestWay(source,dest);
-    while (!a1.empty()) {
-        NodePoint *location = (NodePoint *)a1.front();
-        cout << *location ;
-        a1.pop_front();
-    }
-    int x=2;
-*/
 
-
-    int portNumber = atoi(argv[1]); // getting the port number from the arguments of the main.
-    Socket* socket = new Udp(0,portNumber);//creating a new socket -udp.
+    int portNumber = atoi(argv[2]); // getting the port number from the arguments of the main.
+    Socket* socket = new Tcp(0,portNumber);//creating a new socket -udp.
     socket->initialize();   //initialize the socket.
-    char buffer[1024];  // define a buffer for the serialization.
+    char buffer[130000];  // define a buffer for the serialization.
+    memset(buffer,0,130000);
+    AbstractCab* mycab;
 
     int id,age,experience,vehicleId;// recieving a driver.
     char status, dummy;
@@ -67,24 +43,38 @@ int main(int argc, char *argv[]){
     oa << driver;
     s.flush();
 
+
     //send the serialized driver to the server.
-    socket->sendData(serializedDriver);
-    AbstractCab* mycab;
+    int check = socket->sendData(serializedDriver, 0);
+    // check if the server get the driver, if not send again
+    while (check==5){
+        check = socket->sendData(serializedDriver, 0);
+    }
 
     //received the matching taxi from the server for the driver sent before.
-    socket->reciveData(buffer,sizeof(buffer));
+    socket->reciveData(buffer,sizeof(buffer), 0);
+    // when the client get the cab, he sent ok
+
     boost::iostreams::basic_array_source<char> device(buffer,sizeof(buffer));
     boost::iostreams::stream<boost::iostreams::basic_array_source<char> > s2(device);
     boost::archive::binary_iarchive ia(s2);
     ia>>mycab;//deserialize the taxi received.
     driver->setCab(mycab);// setting the taxi as the drivers cab.
+
+    
     int endFlag = 0;
     int clientFlag =1;
+
+    int k = 0;
+    int j = 1;
     while(endFlag!=1){
-        socket->reciveData(buffer,sizeof(buffer));//wait for a command.
+        memset(buffer,0,130000);
+        socket->reciveData(buffer,sizeof(buffer), 0);//wait for a command.
+
         if(strcmp(buffer,"AssignTrip") == 0) {
             TripInformation* tripInformation;
-            socket->reciveData(buffer,sizeof(buffer));// receive the trip.
+            memset(buffer,0,130000);
+            socket->reciveData(buffer,sizeof(buffer), 0);// receive the trip.
             boost::iostreams::basic_array_source<char> device(buffer,sizeof(buffer));
             boost::iostreams::stream<boost::iostreams::basic_array_source<char> > s2(device);
             boost::archive::binary_iarchive ia(s2);
@@ -93,17 +83,23 @@ int main(int argc, char *argv[]){
         }
 
         if(strcmp(buffer,"Drive") == 0){
-            driver->moveOneStep(clientFlag);
+            driver->moveOneStep(clientFlag, -1);
         }
 
         if(strcmp(buffer,"ShutDown") == 0){
+            TripInformation* trip = driver->getCurrentTrip();
+            if (trip !=0){
+                while (trip->getRouteLength()!=0){
+                    delete (trip->getNextPointOnRounte());
+                }
+                delete(trip);
+            }
             delete (driver->getCab()->getLocation());
             delete (driver);
             delete (mycab);
             endFlag=1;
         }
     }
-
-    delete (socket);
-
+    // close the socket
+    delete socket;
 }

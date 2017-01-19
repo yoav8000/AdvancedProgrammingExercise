@@ -13,6 +13,7 @@ TripInformation::TripInformation(){ //for debugging
     numberOfPassangers=0;
     timeOfStart=0;
     meterPassed = 0;
+    computeShortestWayDone = false;
 }
 
 TripInformation::TripInformation(int rideId2, int meterPassed2, AbstractNode* source2,
@@ -23,6 +24,7 @@ TripInformation::TripInformation(int rideId2, int meterPassed2, AbstractNode* so
     destination = destination2;
     tariff = tariff2;
     numberOfPassangers=pass;
+    computeShortestWayDone = false;
 
 }
 TripInformation::TripInformation(int rideId2, int xStart, int yStart, int xEnd, int yEnd,
@@ -34,6 +36,7 @@ TripInformation::TripInformation(int rideId2, int xStart, int yStart, int xEnd, 
     numberOfPassangers=pass;
     timeOfStart=timeOfStart1;
     meterPassed = 0;
+    computeShortestWayDone = false;
 }
 
 
@@ -90,8 +93,17 @@ void TripInformation::setStartTime(int s){
     timeOfStart=s;
 }
 
+void TripInformation::setComputeShortestWayDone(){
+    computeShortestWayDone = true;
+}
+bool TripInformation::getComputeShortestWayDone(){
+    return computeShortestWayDone;
+}
+
+
  TripInformation::~TripInformation() {
      delete(shortestPath);
      delete(source);
      delete(destination);
  }
+
