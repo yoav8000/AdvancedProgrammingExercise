@@ -18,7 +18,7 @@ class Matrix: public Grid {
 private:
     int x;
     int y;
-    NodePoint* nodes[2000][2000];
+    NodePoint* nodes[1000][1000];
 public:
     // constructor
     Matrix(int xSize, int ySize);

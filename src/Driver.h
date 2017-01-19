@@ -43,6 +43,7 @@ private:
     bool available;
     AbstractCab* myCab;
     TripInformation* currentTrip;
+    int arriveToDestinationAt;
 
 public:
     // constructors
@@ -90,10 +91,12 @@ public:
 
     void setCurrentTrip(TripInformation*& trip);
     TripInformation* getCurrentTrip();
+    int getArriveToDestinationAt();
+    void setArriveToDestinationAt(int time);
 
     void startDriving(Matrix*& matrix);
     // the method notifies the cab to move one step until it gets to the destination.
-    void moveOneStep(int clientFlag);
+    void moveOneStep(int clientFlag, int time);
 
 
 

@@ -23,6 +23,8 @@
 #include "StandardCab.h"
 #include "LuxuryCab.h"
 #include "TaxiCenter.h"
+#include "Tcp.h"
+#include "Socket.h"
 
 
 using namespace std;
@@ -33,7 +35,7 @@ using namespace boost::archive;
 
 int main(int argc, char* argv[]){
     TaxiCenter* taxiCenter = new TaxiCenter();
-    Socket* socket = new Udp(1,atoi(argv[1]));
+    Socket* socket = new Tcp(1,atoi(argv[1]));
     Menu menu(taxiCenter, socket);
     menu.getInput();
     delete(taxiCenter);
